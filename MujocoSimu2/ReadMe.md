@@ -90,8 +90,11 @@ $F_c$ : constraint forces such as contact, friction, joints
  dt = 1/1000
 
  actions  : [turn,move,jump]
+- turn : 0 = doesn't turn, 1 = turns left, 2 = turns right
+- move : 0 = doesn't move, 1 = moves backward, 2 = moves forward
+- jump : 0  = doesn't jump, 1 = jumps
 
- observations : s
+ observations :  5 observation memory length, 21 rays, each returning  [object type,distance ]
 
  done : 
 - simulation time > 20 sec
@@ -102,3 +105,13 @@ reset :
 - random position : x ∈ [ 1, 5 ]   y ∈ [ 1, 8 ]   z = 0.75
 - random orientation : θx = 0, θy = 0, θz ∈ [-π,π]
 
+### Raycasting characteristics : 
+All 21 rays are shot in front of Albert
+
+ray length = 10m
+
+grid vision : 
+ -  yaw : 7 rays covering 70° in [-35°,35°]
+ - pitch : 3 rays covering 15° in [-12°,+3°]
+
+un comment the call to the show_grid function in raycasting() to visualize the raycasting
