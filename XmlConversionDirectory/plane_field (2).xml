@@ -1,0 +1,3 @@
+<mujoco model="plane_field">
+    <compiler angle="radian" coordinate="local" />
+    <option gravity="0 0 0 " /><worldbody><geom type="plane" name="field" size="10 10 0.01" pos="0 0 0" /></worldbody></mujoco>

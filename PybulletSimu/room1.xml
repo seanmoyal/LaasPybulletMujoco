@@ -1,0 +1,1 @@
+<mujoco model="plane_field"><compiler angle="radian" coordinate="local" /><option gravity="0 0 0 " /></mujoco>
