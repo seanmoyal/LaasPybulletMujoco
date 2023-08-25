@@ -81,7 +81,7 @@ class AlbertEnv(gym.Env):
         reward = 0
         contact = self.curr_state["contactPoints"]
         if action[2] == JumpType.JUMP:
-            reward -= 0.05 
+            reward -= 0.05
         if (ObjectType.WALL in contact or ObjectType.FENCE in contact or ObjectType.IBLOCK in contact):
             reward -= 0.1
         if (self.achieved_maze()):

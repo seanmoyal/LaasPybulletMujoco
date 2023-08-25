@@ -1,9 +1,0 @@
-<robot name="cube">
-<link name="base_link">
-    <visual>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
-        <geometry>
-            <mesh filename="C:/Users/moyal/PycharmProjects/testEnviSim/PybulletSimu/MeshDirectory/testSwitchUrdf.dae"/>
-        </geometry>
-    </visual>
-</link>
