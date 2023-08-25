@@ -1,3 +1,4 @@
+import os
 import xml.etree.ElementTree as ET
 import pybullet as p
 
@@ -128,7 +129,11 @@ def xml_room_manager_pybullet(room_manager, file_name):
         xml_room_pybullet(worldbody, room, name)
         i += 1
     tree = ET.ElementTree(root)
-    file = 'C:/Users/moyal/PycharmProjects/testEnviSim/xmlDirectory/' + file_name + ".xml"
+
+    project_name = "testEnviSim"
+    project_path = get_absolute_path_project(project_name).replace('\\', '/')
+    xml_directory_path = project_path + "/xmlDirectory/"
+    file = xml_directory_path + file_name + ".xml"
     tree.write(file)
 
 
@@ -137,3 +142,16 @@ def list_to_string(list):
     for l in list:
         s += " " + str(l)
     return s
+
+def get_absolute_path_project(project_name):
+
+    script_directory = os.path.dirname(os.path.abspath(__file__))
+
+    current_directory = script_directory
+    while current_directory != os.path.dirname(current_directory):
+        if os.path.basename(current_directory) == project_name:
+            return current_directory
+        current_directory = os.path.dirname(current_directory)
+
+    # If the specified directory is not found, return None
+    return None

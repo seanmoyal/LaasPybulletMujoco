@@ -1,7 +1,4 @@
 import pybullet as p
-from PybulletSimu.ObjetsEnvironnement.Cube import Cube
-
-
 class Room:  # classe d'une chambre ( niveau )
     def __init__(self, depth, width, height, material, x, y, l):
         self.global_coord = [x, y, l]  # l=0.5 # Coordonées globales de la chambre

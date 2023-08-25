@@ -1,9 +1,6 @@
 import os
 import xml.etree.ElementTree as ET
 
-f1 = "C:/Users/moyal/PycharmProjects/testEnviSim/xmlDirectory/Test1.xml"
-f2 = "C:/Users/moyal/PycharmProjects/testEnviSim/xmlDirectory/Actor.xml"
-
 
 def merge_mjcf_files(file_1, file_2, file_name):
     tree_1 = ET.parse(file_1)

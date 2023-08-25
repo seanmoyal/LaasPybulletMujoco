@@ -1,6 +1,5 @@
 import math
 from Enums import ObjectType,MoveType,JumpType,TurnType
-import keyboard
 import numpy as np
 from MujocoSimu2.ObjetsEnvironnement.Cube import Cube
 import mujoco as mj

@@ -9,7 +9,6 @@ from MujocoSimu2.ObjetsEnvironnement.AlbertCube import AlbertCube
 from MujocoSimu2.ObjetsEnvironnement.Room import Room
 from MujocoSimu2.ObjetsEnvironnement.RoomManager import RoomManager
 from XmlConversionDirectory.xmlMerger import merge_mjcf_files
-import time
 from Enums import JumpType,MoveType
 
 class AlbertEnv(gym.Env):
@@ -25,10 +24,10 @@ class AlbertEnv(gym.Env):
         room_manager_xml = room_manager_path
         albert_xml = xml_directory_path+"Actor.xml"
 
-
         merge_mjcf_files(room_manager_xml, albert_xml, "AlbertEnvironment2")
-
         albert_environnement = xml_directory_path+"AlbertEnvironment2.xml"
+
+
         # initialisation mujoco
         self.model = mj.MjModel.from_xml_path(albert_environnement)
         self.data = mj.MjData(self.model)

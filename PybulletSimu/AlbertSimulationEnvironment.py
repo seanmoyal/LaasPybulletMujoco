@@ -1,8 +1,5 @@
-import pybullet
 import pybullet as p
 import time
-import os
-import pathlib
 import pybullet_data
 from ObjetsEnvironnement.RoomManager import RoomManager
 from ObjetsEnvironnement.Cube import Cube
@@ -56,12 +53,7 @@ p.setGravity(0, 0, -100)
 plane_id = p.loadURDF("plane.urdf")
 start_pos = [0, 0, 100]
 start_orientation = p.getQuaternionFromEuler([0, 0, 0])
-# absPath=pathlib.Path(__file__).parent.resolve()
-# absPath.replace(os.sep, '/')
-# pathUrdf="/UrdfDirectory/"
-# print("path : ",absPath)
-# pathCube=absPath+pathUrdf+"Cube.urdf"
-# boxId = p.loadURDF("C:/Users/moyal/PycharmProjects/testEnviSim/PybulletSimu/UrdfDirectory/Cube.urdf",startPos, startOrientation)
+
 base_cube = Cube()
 iblock_cube = IBlock(Cube(color=[0, 0, 0, 1]), 1)
 iblock_cube_2 = IBlock(Cube(color=[0, 0, 0, 1]), 2)

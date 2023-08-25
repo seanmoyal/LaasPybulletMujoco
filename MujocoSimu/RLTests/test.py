@@ -1,5 +1,3 @@
-import gym
-import gym_examples
 from gym_examples2.gym_examples.envs.AlbertEnv import AlbertEnv
 import keyboard
 

@@ -1,3 +1,5 @@
+import os
+
 import gym
 import mujoco.viewer
 import numpy as np
@@ -16,14 +18,19 @@ class AlbertEnv(gym.Env):
 
     def __init__(self, character=1):
 
+
         self.room_manager = RoomManager()
+        project_name="testEnviSim"
+        project_path = get_absolute_path_project(project_name).replace('\\', '/')
+        xml_directory_path=project_path+"/xmlDirectory/"
+        room_manager_path=xml_directory_path+"Room2bis.xml"
+        room_manager_xml = room_manager_path
+        albert_xml = xml_directory_path+"Actor.xml"
 
-        room_manager_xml = "C:/Users/moyal/Desktop/testEnviSim/xmlDirectory/Room2bis.xml"
-        albert_xml = "C:/Users/moyal/Desktop/testEnviSim/xmlDirectory/Actor.xml"
-        # faire une fo qui construit l'objet room à partir du xml
+
         merge_mjcf_files(room_manager_xml, albert_xml, "AlbertEnvironment2")
+        albert_environnement = xml_directory_path+"AlbertEnvironment2.xml"
 
-        albert_environnement = "C:/Users/moyal/Desktop/testEnviSim/xmlDirectory/AlbertEnvironment2.xml"
         # initialisation mujoco
         self.model = mj.MjModel.from_xml_path(albert_environnement)
         self.data = mj.MjData(self.model)
@@ -150,3 +157,16 @@ class AlbertEnv(gym.Env):
     def update_state(self):
         self.curr_state = self.character.current_state
         self.prev_state = self.character.get_previous_state()
+
+def get_absolute_path_project(project_name):
+
+    script_directory = os.path.dirname(os.path.abspath(__file__))
+
+    current_directory = script_directory
+    while current_directory != os.path.dirname(current_directory):
+        if os.path.basename(current_directory) == project_name:
+            return current_directory
+        current_directory = os.path.dirname(current_directory)
+
+    # If the specified directory is not found, return None
+    return None

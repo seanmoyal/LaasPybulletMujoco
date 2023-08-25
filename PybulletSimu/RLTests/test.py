@@ -1,5 +1,3 @@
-import gym
-import gym_examples
 from gym_examples.gym_examples.envs.AlbertEnv import AlbertEnv
 
 

@@ -11,7 +11,7 @@ from PybulletSimu.ObjetsEnvironnement.Door import Door
 from PybulletSimu.ObjetsEnvironnement.AlbertCube import AlbertCube
 from PybulletSimu.ObjetsEnvironnement.Room import Room
 from PybulletSimu.ObjetsEnvironnement.RoomManager import RoomManager
-from Enums import MoveType,JumpType,ObjectType
+from Enums import JumpType,ObjectType
 
 class AlbertEnv(gym.Env):
     metadata = {'render.modes': ['human']}

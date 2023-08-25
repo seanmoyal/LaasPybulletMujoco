@@ -1,11 +1,9 @@
-import gym
 import numpy as np
 import torch
 import torch.nn as nn
 from stable_baselines3 import PPO
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 from gym_examples2.gym_examples.envs.AlbertEnv import AlbertEnv
-from stable_baselines3.common.logger import configure
 from CustomCallback import CustomCallback
 # Define a custom features extractor
 
