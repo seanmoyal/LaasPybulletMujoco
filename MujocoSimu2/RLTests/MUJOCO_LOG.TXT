@@ -7,3 +7,6 @@ WARNING: mju_openResource: unknown file 'C:/Users/moyal/PycharmProjects/testEnvi
 Fri Aug  4 13:34:31 2023
 ERROR: m->nbody changed
 
+Fri Aug 25 11:08:34 2023
+ERROR: mjv_updateSceneState: m->nbody changed
+

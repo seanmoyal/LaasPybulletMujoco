@@ -1,5 +1,4 @@
 import os.path
-
 import gym
 import mujoco.viewer
 import numpy as np
@@ -11,7 +10,7 @@ from MujocoSimu2.ObjetsEnvironnement.Room import Room
 from MujocoSimu2.ObjetsEnvironnement.RoomManager import RoomManager
 from XmlConversionDirectory.xmlMerger import merge_mjcf_files
 import time
-
+from Enums import JumpType,MoveType
 
 class AlbertEnv(gym.Env):
     metadata = {'render.modes': ['human']}
@@ -95,9 +94,9 @@ class AlbertEnv(gym.Env):
         # compute reward
         reward = 0
         contact = self.curr_state["contactPoints"]
-        if action[1]==0:
+        if action[1] == MoveType.NO_MOVE:
             reward-=0.05
-        if action[2] == 1:
+        if action[2] == JumpType.JUMP: # for it not to jump all the time
             reward -= 0.05
         for i in range(105):
                     if self.current_obs[i*6+1]==1:
@@ -114,7 +113,7 @@ class AlbertEnv(gym.Env):
             reward -= 0.5
         # compute done
 
-        self.time_passed += 1 / 1000  # 1/240 s is the time step
+        self.time_passed += 1 / 1000  # dt
         done = False
         if (self.time_passed >= self.time_episode or self.character.has_fallen() or self.achieved_maze()):
             done = True

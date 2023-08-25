@@ -11,7 +11,7 @@ from PybulletSimu.ObjetsEnvironnement.Door import Door
 from PybulletSimu.ObjetsEnvironnement.AlbertCube import AlbertCube
 from PybulletSimu.ObjetsEnvironnement.Room import Room
 from PybulletSimu.ObjetsEnvironnement.RoomManager import RoomManager
-
+from Enums import MoveType,JumpType,ObjectType
 
 class AlbertEnv(gym.Env):
     metadata = {'render.modes': ['human']}
@@ -80,9 +80,9 @@ class AlbertEnv(gym.Env):
         # compute reward
         reward = 0
         contact = self.curr_state["contactPoints"]
-        if action[2] == 1:
-            reward -= 0.05
-        if (3 in contact or 4 in contact or 5 in contact):
+        if action[2] == JumpType.JUMP:
+            reward -= 0.05 
+        if (ObjectType.WALL in contact or ObjectType.FENCE in contact or ObjectType.IBLOCK in contact):
             reward -= 0.1
         if (self.achieved_maze()):
             reward += 1

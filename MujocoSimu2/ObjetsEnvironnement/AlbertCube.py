@@ -1,5 +1,5 @@
 import math
-
+from Enums import ObjectType,MoveType,JumpType,TurnType
 import keyboard
 import numpy as np
 from MujocoSimu2.ObjetsEnvironnement.Cube import Cube
@@ -97,11 +97,11 @@ class AlbertCube(Cube):
     def jump(self, jump, move):
         i = 13000  # force du jump sur un pas
         move_x = 0
-        if move == 1:
+        if move == MoveType.BACKWARD_MOVE:
             move_x = -1
-        elif move == 2:
+        elif move == MoveType.FORWARD_MOVE:
             move_x = 1
-        if jump == 1:
+        if jump == JumpType.JUMP:
             if self.in_contact_with_floor_or_button():
                 self.start_jumping = True
         if self.start_jumping:
@@ -114,9 +114,9 @@ class AlbertCube(Cube):
 
     def yaw_turn(self, rotate): # fonction de rotation d'albert
         move_z = 0
-        if rotate == 1:
+        if rotate == TurnType.LEFT_TURN:
             move_z = -1
-        elif rotate == 2:
+        elif rotate == TurnType.RIGHT_TURN:
             move_z = 1
         angular_velocity = [0, 0, 2 * move_z]  # mz=1/0/-1
         self.data.qvel[3:6] = angular_velocity
@@ -124,9 +124,9 @@ class AlbertCube(Cube):
 
     def move(self, move):  # fonction définissant les mouvements sur le sol
         move_x = 0
-        if move == 1:
+        if move == MoveType.BACKWARD_MOVE:
             move_x = -1
-        elif move == 2:
+        elif move == MoveType.FORWARD_MOVE:
             move_x = 1
         linear_velocity = [move_x * 300, 0, 0]
         ori = self.data.xquat[self.id]
@@ -142,7 +142,7 @@ class AlbertCube(Cube):
         move = action[1]
         jump = action[2]
         self.yaw_turn(rotate)
-        if 2 in self.current_state["contactPoints"]:
+        if ObjectType.FLOOR in self.current_state["contactPoints"]:
             self.move(move)
             self.jump(jump, move)
         self.current_state = self.get_current_state()
@@ -157,7 +157,7 @@ class AlbertCube(Cube):
             room = self.room_manager.room_array[self.actual_room]
             if contact_results[i][0] == 0 or contact_results[i][0] == -1:
                 current_observation[21 + i] = 10  # à changer en la distance du rayon
-                current_observation[i] = 0
+                current_observation[i] = ObjectType.NONE
             else:
                 type = contact_results[i][0]
                 distance = contact_results[i][1]
@@ -171,26 +171,26 @@ class AlbertCube(Cube):
     def check_type(self, id, room): # retourne à quel type d'objet l'id fait référence
         buttons = room.buttons_array.keys()
         if id in buttons:
-            return 1
+            return ObjectType.BUTTON
 
         if id in room.floor_array:
-            return 2
+            return ObjectType.FLOOR
 
         if id in room.wall_array:
-            return 3
+            return ObjectType.WALL
 
         fences = room.fences_array
         if id in fences:
-            return 4
+            return ObjectType.FENCE
 
         iblocks = room.iblocks_array
         if id in iblocks:
-            return 5
+            return ObjectType.IBLOCK
         if id == room.door_array[0]:
             if room.door_array[1].is_opened: # si porte ouverte : considérée comme un boutton
-                return 1
-            return 3 # sinon considérée comme un mur
-        return 0
+                return ObjectType.BUTTON
+            return ObjectType.WALL # sinon considérée comme un mur
+        return ObjectType.NONE
 
     def calc_distance(self, id):  # calcul de distance entre un objet et albert
         pos_object = self.model.geom(id).pos
@@ -256,7 +256,7 @@ class AlbertCube(Cube):
                 if id not in ids:
                     contact_types.append(type)
                     ids.append(id)
-                if type == 1:
+                if type == ObjectType.BUTTON:
                     if id == self.room_manager.room_array[self.actual_room].door_array[0]:
                         if self.room_manager.room_array[self.actual_room].door_array[1].is_opened:
                             continue
@@ -264,7 +264,7 @@ class AlbertCube(Cube):
                     if (pushed_button.is_pressed == False):
                         pushed_button.got_pressed(self.model)
             while (len(contact_types) < 6):
-                contact_types.append(0)
+                contact_types.append(ObjectType.NONE)
             current_state["contactPoints"] = contact_types
 
         self.room_manager.room_array[self.actual_room].check_buttons_pushed(self.model)
@@ -309,7 +309,7 @@ class AlbertCube(Cube):
         for i in range(n):
             a = self.check_type(contact_points[i][0], self.room_manager.room_array[self.actual_room])
 
-            if a == 2 or a == 1:
+            if a == ObjectType.FLOOR or a == ObjectType.BUTTON:
                 return True
         return False
 
