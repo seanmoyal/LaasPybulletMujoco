@@ -14,7 +14,7 @@ g = -10 m/s
 masse m = 10 kg
 
 ### Step (dt) : 
-step = 1/240. s (secondes)
+step = 0.001 s (secondes)
 
 
 ### Comment marche le jump :
