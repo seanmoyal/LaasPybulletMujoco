@@ -1,11 +1,11 @@
-## Caractéristiques de l'environnement
+## Pybullet Readme
 
 
 
 ## How to use this program : 
 
-### PybulletSimu/RLTests/test.py : 
-
+### To test the simulation : 
+    PybulletSimu/RLTests/test.py
  Moving Albert : 
   -  up key : move forward
   -  down key : move backward
@@ -13,53 +13,76 @@
   - right key : turn right
   - space key : jump
 
-### RLTests/PPO2.py : 
 
- Launches the training of the PPO model
+### How to train the PPO model : 
+
+    Launch RLTests/PPO2.py
 
 
 ## Environment characteristics :
-### conditions initiales :
-position initiale : random entre y c [1;8] et x c [1;5]
-orientation initiale : z c [-pi,pi] (Euler)
+### Initial conditions :
+
+Albert's initial position : Randomized with y ∈ [1;8] et x ∈ [1;5]
+Initial orientation : Randomized with z ∈ [-pi,pi] (Euler)
 
 
-### Gravité : 
+### Gravity : 
 g = -100 m/s²
 
-masse m = 10 kg
+Albert's mass : m = 10 kg
 
-### Steps :
-step(dt) = 1/240s
+### Integration Steps :
+step(dt) = 1/240 s
 
+## Movement and Raycasting (ObjetsEnvironnement/AlbertCube.py) : 
 
-### Comment marche le jump :
+### How does the Albert's Jump function works :
+
+#### variables:
+
 x_factor : 
-- 1 : saut vers l'avant
-- 0 : saut sur place
-- -1 : saut vers l'arrière
+- 1 : jump forward
+- 0 : jump on the spot
+- -1 : jump backward
 
-ori_jump : orientation d'albert au début du saut
-new_ori : orientation actuelle d'albert
+ori_jump : Albert's orientation at the beginning of the jump
 
-Ascendant :
-- départ de saut : impulse $step * [500 * x_factor,0,1000]_{référentiel d'Albert}$ (N)
-- ascension : impulse $step * [500 * x_factor * cos(new_ori - ori_jump), -500 * x_factor * sin(new_ori - ori_jump), 1000]_{référentiel d'Albert}$ (N)
+new_ori : Albert's current orientation
 
-Descendant : impulse $step * [500 * x_factor * cos(new_ori - ori_jump), -500 * x_factor * sin(new_ori - ori_jump), -1000]_{référentiel d'Albert}$ (N)
+#### jump phases :
 
-### Comment marche le move : 
-avancée : impulse $step * [250,0,0]_{référentiel d'Albert}$ (N)
-reculée : impulse $step * [-250,0,0]_{référentiel d'Albert}$ (N)
+Upward :
+- beginning of the jump : impulse $step * [500 * x_factor,0,1000]_{Albert's Referential}$ (N)
+- ascension : impulse $step * [500 * x_factor * cos(new_ori - ori_jump), -500 * x_factor * sin(new_ori - ori_jump), 1000]_{Albert's Referential}$ ( in N)
 
-### Actions,Observations...
+Downward : impulse $step * [500 * x_factor * cos(new_ori - ori_jump), -500 * x_factor * sin(new_ori - ori_jump), -1000]_{Albert's Referential}$ ( in N )
 
- actions  : [turn,move,jump]
+### How does the move work : 
+forward : impulse $step * [250,0,0]_{Albert's Referential}$ (in N)
+backward : impulse $step * [-250,0,0]_{Albert's Referential}$ (in N)
+
+### Raycasting characteristics : 
+All 21 rays are shot in front of Albert
+
+ray length = 10 m
+
+#### grid vision : 
+ -  yaw : 7 rays covering 70° in [-35°,35°]
+ - pitch : 3 rays covering 20° in [-10°,10°]
+
+#### uncomment the call to the show_grid function in raycasting() to visualize the raycasting
+
+
+
+
+## Gym details : 
+
+#### actions  : [turn,move,jump]
 - turn : 0 = doesn't turn, 1 = turns left, 2 = turns right
 - move : 0 = doesn't move, 1 = moves backward, 2 = moves forward
 - jump : 0  = doesn't jump, 1 = jumps
 
- observations :  5 observation memory length, 21 rays, returning : 
+#### observations : a 5 observation memory length, 21 rays, returning : 
     (o[0],...,o[104],d[0],...,d[104])
 
 where :
@@ -67,16 +90,16 @@ d : distance to object : [0 to 10]
 
 o : type of object : [0,1,2,3,4,5] = [none,button,ground,wall,fence,Iblock]
 
- done : 
+ #### done if : 
 - simulation time > 20 sec
 - albert falls off the level
 - albert succeeds in passing the door
 
-reset : 
+#### reset : 
 - random position : x ∈ [ 1, 3 ]   y ∈ [ 1, 5 ]   z = 0.75
 - random orientation : θx = 0, θy = 0, θz ∈ [-π,π]
 
-rewards :
+#### rewards :
 - -0.05 if Albert jumps
 - -0.1 if Albert has a contact with a wall,fence or iblock
 - -0.5 if Albert falls off the level
@@ -84,21 +107,7 @@ rewards :
 - +1 if Albert pushes a button
 
 
-### Raycasting characteristics : 
-All 21 rays are shot in front of Albert
-
-ray length = 5 m
-
-grid vision : 
- -  yaw : 7 rays covering 70° in [-35°,35°]
- - pitch : 3 rays covering 20° in [-10°,10°]
-
-un comment the call to the show_grid function in raycasting() to visualize the raycasting
-
-
-
-
-## Equations utilisées : 
+## Equations used : 
 
 ### Semi-Explicit Euler :
 > - **F = m*a**
@@ -110,8 +119,9 @@ $F_{ext}$ : gravity, wind force field, user forces ...
 
 $F_c$ : constraint forces such as contact, friction, joints
 
-> La fonction p.applyExternalForce() prend en parmètres un array[x,y,z] en Newtons (N)
-> c'est une impulsion : (F*step)
+> the p.applyExternalForce() function takes as a parameter an array[x,y,z] in Newtons (N)
+
+ It's an impulse : (F*step)
 
 ### Friction : 
 
