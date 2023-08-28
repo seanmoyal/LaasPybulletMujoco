@@ -56,7 +56,7 @@ x_jumping_factor :
 jump force : i = 13000
 
 #### jump equation
- Beginning of the jump : impulse $step * [5 * x_jumping_factor,0,i]_{Albert's Referential}$ (in N)
+ Beginning of the jump : impulse $step * [5 * xJumpingFactor,0,i]_{Albert's Referential}$ (in N)
 
 ### How does the move work :
 forward : impulse $step * [250,0,0]_{Albert's Referential}$ (in N)

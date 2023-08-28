@@ -52,10 +52,10 @@ new_ori : Albert's current orientation
 #### jump phases :
 
 Upward :
-- beginning of the jump : impulse $step * [500 * x_factor,0,1000]_{Albert's Referential}$ (N)
-- ascension : impulse $step * [500 * x_factor * cos(new_ori - ori_jump), -500 * x_factor * sin(new_ori - ori_jump), 1000]_{Albert's Referential}$ ( in N)
+- beginning of the jump : impulse $step * [500 * xFactor,0,1000]_{Albert's Referential}$ (N)
+- ascension : impulse $step * [500 * xFactor * cos(newOri - oriJump), -500 * xFactor * sin(newOri - oriJump), 1000]_{Albert's Referential}$ ( in N)
 
-Downward : impulse $step * [500 * x_factor * cos(new_ori - ori_jump), -500 * x_factor * sin(new_ori - ori_jump), -1000]_{Albert's Referential}$ ( in N )
+Downward : impulse $step * [500 * xFactor * cos(newOri - oriJump), -500 * xFactor * sin(newOri - oriJump), -1000]_{Albert's Referential}$ ( in N )
 
 ### How does the move work : 
 forward : impulse $step * [250,0,0]_{Albert's Referential}$ (in N)
@@ -111,7 +111,7 @@ o : type of object : [0,1,2,3,4,5] = [none,button,ground,wall,fence,Iblock]
 
 ### Semi-Explicit Euler :
 > - **F = m*a**
-> - $$(τ = I * (dω/dt) + ω * I*ω)$$
+> - $(τ = I * (dω/dt) + ω * I*ω)$
 > - $v_{t+Δt} = v_t + a * Δt = v_t + (F_{ext} + F_c)/m * Δt = v_t + F_{ext}/m * Δt + impulse_c/m$
 > - $x_{t+Δt} = x_t + v_{t+Δt}*Δt$
 >
@@ -125,9 +125,11 @@ $F_c$ : constraint forces such as contact, friction, joints
 
 ### Friction : 
 
-> linear damping : $F_{damping} = - v_{albert} * linear_damping_coef$
+> linear damping : $F_{damping} = - v_{albert} * linearDampingCoef$
+> 
 > linear_damping_coef = 4 kg/s
 
-> angular damping : $τ_{damping} = - ω_{albert} * angular_damping_coef$
+> angular damping : $τ_{damping} = - ω_{albert} * angularDampingCoef$
+> 
 > angular_damping_coef = 4 kg*m^2/s
 
