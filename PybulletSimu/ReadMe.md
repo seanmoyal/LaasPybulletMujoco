@@ -1,8 +1,24 @@
 ## Caractéristiques de l'environnement
 
 
-## Caractéristiques Cube :
 
+## How to use this program : 
+
+### PybulletSimu/RLTests/test.py : 
+
+ Moving Albert : 
+  -  up key : move forward
+  -  down key : move backward
+  - left key : turn left
+  - right key : turn right
+  - space key : jump
+
+### RLTests/PPO2.py : 
+
+ Launches the training of the PPO model
+
+
+## Environment characteristics :
 ### conditions initiales :
 position initiale : random entre y c [1;8] et x c [1;5]
 orientation initiale : z c [-pi,pi] (Euler)
@@ -13,8 +29,8 @@ g = -100 m/s²
 
 masse m = 10 kg
 
-### Step (dt) : 
-step =1/240 s (secondes)
+### Steps :
+step(dt) = 1/240s
 
 
 ### Comment marche le jump :
@@ -36,58 +52,7 @@ Descendant : impulse $step * [500 * x_factor * cos(new_ori - ori_jump), -500 * x
 avancée : impulse $step * [250,0,0]_{référentiel d'Albert}$ (N)
 reculée : impulse $step * [-250,0,0]_{référentiel d'Albert}$ (N)
 
-### RayCasting : 
-3 rangées ( haut bas milieu ) pour un angle total de 20°
-
-> Chaque rangée : 7 rayons : angle total 70°
-
-
-## Equations utilisées : 
-
-### Semi-Explicit Euler :
-> - **F = m*a**
-> - $$(τ = I * (dω/dt) + ω * I*ω)$$
-> - $v_{t+Δt} = v_t + a * Δt = v_t + (F_{ext} + F_c)/m * Δt = v_t + F_{ext}/m * Δt + impulse_c/m$
-> - $x_{t+Δt} = x_t + v_{t+Δt}*Δt$
->
-$F_{ext}$ : gravity, wind force field, user forces ...
-
-$F_c$ : constraint forces such as contact, friction, joints
-
-> La fonction p.applyExternalForce() prend en parmètres un array[x,y,z] en Newtons (N)
-> c'est une impulsion : (F*step)
-
-### Friction : 
-
-> linear damping : $F_{damping} = - v_{albert} * linear_damping_coef$
-> linear_damping_coef = 4 kg/s
-
-> angular damping : $τ_{damping} = - ω_{albert} * angular_damping_coef$
-> angular_damping_coef = 4 kg*m^2/s
-
-
-
-## How to use this program : 
-
-### MujocoSimu2/RLTests/test.py : 
-
- Moving Albert : 
-  -  up key : move forward
-  -  down key : move backward
-  - left key : turn left
-  - right key : turn right
-  - space key : jump
-
-### RLTests/PPO2.py : 
-
- Launches the training of the PPO model
-
-### RLTests/TestModel.py : 
-
- Loads the trained model into the simulation
- 
-## Environment characteristics :
- dt = 1/240 s
+### Actions,Observations...
 
  actions  : [turn,move,jump]
 - turn : 0 = doesn't turn, 1 = turns left, 2 = turns right
@@ -129,3 +94,31 @@ grid vision :
  - pitch : 3 rays covering 20° in [-10°,10°]
 
 un comment the call to the show_grid function in raycasting() to visualize the raycasting
+
+
+
+
+## Equations utilisées : 
+
+### Semi-Explicit Euler :
+> - **F = m*a**
+> - $$(τ = I * (dω/dt) + ω * I*ω)$$
+> - $v_{t+Δt} = v_t + a * Δt = v_t + (F_{ext} + F_c)/m * Δt = v_t + F_{ext}/m * Δt + impulse_c/m$
+> - $x_{t+Δt} = x_t + v_{t+Δt}*Δt$
+>
+$F_{ext}$ : gravity, wind force field, user forces ...
+
+$F_c$ : constraint forces such as contact, friction, joints
+
+> La fonction p.applyExternalForce() prend en parmètres un array[x,y,z] en Newtons (N)
+> c'est une impulsion : (F*step)
+
+### Friction : 
+
+> linear damping : $F_{damping} = - v_{albert} * linear_damping_coef$
+> linear_damping_coef = 4 kg/s
+
+> angular damping : $τ_{damping} = - ω_{albert} * angular_damping_coef$
+> angular_damping_coef = 4 kg*m^2/s
+
+### Collisions : 
