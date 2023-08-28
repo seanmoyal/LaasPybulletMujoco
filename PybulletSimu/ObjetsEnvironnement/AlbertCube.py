@@ -75,7 +75,7 @@ class AlbertCube(Cube):
         step_yaw = 70 / 6
         step_yaw_rad = step_yaw * np.pi / 180
 
-        # pas pitch pour 70°
+        # pas pitch pour 20°
         step_pitch = 20 / 2
         step_pitch_rad = step_pitch * np.pi / 180
 
@@ -114,11 +114,11 @@ class AlbertCube(Cube):
     def jump(self, jump, move):
         i = 1000  # force du jump sur un pas
         move_x = 0
-        if move == MoveType.BACKWARD_MOVE:
+        if move == MoveType.BACKWARD_MOVE.value:
             move_x = -1
-        elif move == MoveType.FORWARD_MOVE:
+        elif move == MoveType.FORWARD_MOVE.value:
             move_x = 1
-        if jump == JumpType.JUMP:
+        if jump == JumpType.JUMP.value:
             self.still_jumping = True
             if len(p.getContactPoints(self.id)) != 0:
                 self.jumping = True
@@ -149,18 +149,18 @@ class AlbertCube(Cube):
 
     def yaw_turn(self, rotate):
         move_z = 0
-        if rotate == TurnType.LEFT_TURN:
+        if rotate == TurnType.LEFT_TURN.value:
             move_z = -1
-        elif rotate == TurnType.RIGHT_TURN:
+        elif rotate == TurnType.RIGHT_TURN.value:
             move_z = 1
         angular_velocity = [0, 0, 10 * move_z]  # mz=1/0/-1
         p.resetBaseVelocity(self.id, angularVelocity=angular_velocity)
 
     def move(self, move):  # AJOUTER LA CONDITION SUR S4IL EST DANS LES AIRS OU PAS
         move_x = 0
-        if move == MoveType.BACKWARD_MOVE:
+        if move == MoveType.BACKWARD_MOVE.value:
             move_x = -1
-        elif move == MoveType.FORWARD_MOVE:
+        elif move == MoveType.FORWARD_MOVE.value:
             move_x = 1
         linear_velocity = [move_x * 250, 0, 0]
         p.applyExternalForce(self.id, -1, linear_velocity, [0, 0, 0], p.LINK_FRAME)
@@ -185,12 +185,12 @@ class AlbertCube(Cube):
             room = self.room_manager.room_array[self.actual_room]
             if contact_results[i][0][0] == 0 or contact_results[i][0][0] == -1:
                 current_observation[21 + i] = 10  # à changer en la distance du rayon
-                current_observation[i] = ObjectType.NONE
+                current_observation[i] = ObjectType.NONE.value
             else:
                 type = self.check_type(contact_results[i][0][0], room)
                 distance = self.calc_distance(contact_results[i][0][0])
                 current_observation[21 + i] = distance
-                current_observation[i] = type
+                current_observation[i] = type.value
 
         # POUR L INSTANT ON VIRE Z DE L OBSERVATION
 

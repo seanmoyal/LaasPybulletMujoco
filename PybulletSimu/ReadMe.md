@@ -4,17 +4,17 @@
 ## Caractéristiques Cube :
 
 ### conditions initiales :
-position initiale : random entre y c [1;5] et x c [1;3]
+position initiale : random entre y c [1;8] et x c [1;5]
 orientation initiale : z c [-pi,pi] (Euler)
 
 
 ### Gravité : 
-g = -10 m/s²
+g = -100 m/s²
 
 masse m = 10 kg
 
 ### Step (dt) : 
-step = 0.001. s (secondes)
+step =1/240 s (secondes)
 
 
 ### Comment marche le jump :
@@ -87,7 +87,7 @@ $F_c$ : constraint forces such as contact, friction, joints
  Loads the trained model into the simulation
  
 ## Environment characteristics :
- dt = 1/1000
+ dt = 1/240 s
 
  actions  : [turn,move,jump]
 - turn : 0 = doesn't turn, 1 = turns left, 2 = turns right
@@ -95,13 +95,12 @@ $F_c$ : constraint forces such as contact, friction, joints
 - jump : 0  = doesn't jump, 1 = jumps
 
  observations :  5 observation memory length, 21 rays, returning : 
-    (o[0],...,o[630],d[0],...,d[104])
+    (o[0],...,o[104],d[0],...,d[104])
 
 where :
 d : distance to object : [0 to 10] 
 
-o[i:i+6] : type of object : [x,x,x,x,x,x] = [none,button,ground,wall,fence,Iblock]
-x=1 for the right type of object and x=0 elsewhere
+o : type of object : [0,1,2,3,4,5] = [none,button,ground,wall,fence,Iblock]
 
  done : 
 - simulation time > 20 sec
@@ -109,28 +108,24 @@ x=1 for the right type of object and x=0 elsewhere
 - albert succeeds in passing the door
 
 reset : 
-- random position : x ∈ [ 1, 5 ]   y ∈ [ 1, 8 ]   z = 0.75
+- random position : x ∈ [ 1, 3 ]   y ∈ [ 1, 5 ]   z = 0.75
 - random orientation : θx = 0, θy = 0, θz ∈ [-π,π]
 
 rewards :
 - -0.05 if Albert jumps
-- -0.05 if Albert doesn't move
 - -0.1 if Albert has a contact with a wall,fence or iblock
 - -0.5 if Albert falls off the level
-- +0.03 for each ray that perceives a button
-- +2 if Albert achieves the maze
-- +1+(1-time_spent_in_simu/time_episode) if Albert pushes a button ( the faster he gets to it the more reward he gets )
-
-
+- +1 if Albert achieves the maze
+- +1 if Albert pushes a button
 
 
 ### Raycasting characteristics : 
 All 21 rays are shot in front of Albert
 
-ray length = 10m
+ray length = 5 m
 
 grid vision : 
  -  yaw : 7 rays covering 70° in [-35°,35°]
- - pitch : 3 rays covering 15° in [-12°,+3°]
+ - pitch : 3 rays covering 20° in [-10°,10°]
 
 un comment the call to the show_grid function in raycasting() to visualize the raycasting

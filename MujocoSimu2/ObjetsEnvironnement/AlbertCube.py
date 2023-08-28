@@ -156,12 +156,12 @@ class AlbertCube(Cube):
             room = self.room_manager.room_array[self.actual_room]
             if contact_results[i][0] == 0 or contact_results[i][0] == -1:
                 current_observation[21 + i] = 10  # à changer en la distance du rayon
-                current_observation[i] = ObjectType.NONE
+                current_observation[i] = ObjectType.NONE.value
             else:
                 type = contact_results[i][0]
                 distance = contact_results[i][1]
                 current_observation[21 + i] = distance
-                current_observation[i] = type
+                current_observation[i] = type.value
 
         self.add_to_memory_observation(current_observation)
         observation = self.flat_memory()
