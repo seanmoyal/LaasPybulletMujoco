@@ -44,20 +44,14 @@ masse m = 10 kg
 step = 0.001. s (secondes)
 
 ### Comment marche le jump :
-x_factor : 
+x_jumping_factor : 
 - 1 : saut vers l'avant
 - 0 : saut sur place
 - -1 : saut vers l'arrière
 
-ori_jump : orientation d'albert au début du saut
-new_ori : orientation actuelle d'albert
+ départ de saut : impulse $step * [5 * x_jumping_factor,0,i]_{référentiel d'Albert}$ (N)
 
-Ascendant :
-- départ de saut : impulse $step * [500 * x_factor,0,1000]_{référentiel d'Albert}$ (N)
-- ascension : impulse $step * [500 * x_factor * cos(new_ori - ori_jump), -500 * x_factor * sin(new_ori - ori_jump), 1000]_{référentiel d'Albert}$ (N)
-
-Descendant : impulse $step * [500 * x_factor * cos(new_ori - ori_jump), -500 * x_factor * sin(new_ori - ori_jump), -1000]_{référentiel d'Albert}$ (N)
-
+i=13000
 ### Comment marche le move : 
 avancée : impulse $step * [250,0,0]_{référentiel d'Albert}$ (N)
 reculée : impulse $step * [-250,0,0]_{référentiel d'Albert}$ (N)
@@ -114,23 +108,21 @@ un comment the call to the show_grid function in raycasting() to visualize the r
 
 ## Equations utilisées : 
 
-### Semi-Explicit Euler :
-> - **F = m*a**
-> - $$(τ = I * (dω/dt) + ω * I*ω)$$
-> - $v_{t+Δt} = v_t + a * Δt = v_t + (F_{ext} + F_c)/m * Δt = v_t + F_{ext}/m * Δt + impulse_c/m$
+### Forward Dynamic equation :
+> - $$M(dv/dt) + c = τ  $$
+> - M : joint space inertia matrix, c = bias forces,τ = applied force
+> - $v_{t+Δt} = v_t + a_t * Δt = v_t + (F_{ext} + F_c)/m * Δt = v_t + F_{ext}/m * Δt + impulse_c/m$
 > - $x_{t+Δt} = x_t + v_{t+Δt}*Δt$
 >
 $F_{ext}$ : gravity, wind force field, user forces ...
 
 $F_c$ : constraint forces such as contact, friction, joints
 
-> La fonction p.applyExternalForce() prend en parmètres un array[x,y,z] en Newtons (N)
+> La valeur data.xfrx_applied[id] prend en parmètres un array[x,y,z] en Newtons (N)
 > c'est une impulsion : (F*step)
 
 ### Friction : 
 
-> linear damping : $F_{damping} = - v_{albert} * linear_damping_coef$
-> linear_damping_coef = 4 kg/s
-
-> angular damping : $τ_{damping} = - ω_{albert} * angular_damping_coef$
-> angular_damping_coef = 4 kg*m^2/s
+in xmlDirectory/Actor.xml :
+damping = 1
+diaginertia = [0.001 0.001 0.001]
