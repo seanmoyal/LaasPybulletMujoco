@@ -121,4 +121,3 @@ $F_c$ : constraint forces such as contact, friction, joints
 > angular damping : $τ_{damping} = - ω_{albert} * angular_damping_coef$
 > angular_damping_coef = 4 kg*m^2/s
 
-### Collisions : 

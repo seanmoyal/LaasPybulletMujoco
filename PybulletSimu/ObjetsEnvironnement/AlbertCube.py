@@ -64,35 +64,7 @@ class AlbertCube(Cube):
     def raycasting(self):
         cube_pos, ori = p.getBasePositionAndOrientation(self.id)
         cube_ori = p.getEulerFromQuaternion(ori)
-        matrice_ori = euler_to_rotation_matrix(cube_ori)
-        ray_length = 5
-        cube_pos_array = np.array([cube_pos for _ in range(7)])
-
-        # départ des angles :
-        dep_angles_yaw = -35 * np.pi / 180
-        dep_angles_pitch = -10 * np.pi / 180
-        # Pas yaw pour 70°
-        step_yaw = 70 / 6
-        step_yaw_rad = step_yaw * np.pi / 180
-
-        # pas pitch pour 20°
-        step_pitch = 20 / 2
-        step_pitch_rad = step_pitch * np.pi / 180
-
-        # rayVec1 : premier rayon droit devant le cube
-        ray_vects = []
-        for i in range(3):
-            for n in range(7):
-                base_ray = [np.cos(n * step_yaw_rad + dep_angles_yaw) * np.cos(i * step_pitch_rad + dep_angles_pitch),
-                            np.sin(n * step_yaw_rad + dep_angles_yaw), np.sin(i * step_pitch_rad + dep_angles_pitch)]
-                norm_ray = np.linalg.norm(base_ray)
-                ray_vects.append(np.dot(matrice_ori, np.array(
-                    [(base_ray[0] / norm_ray * ray_length + cube_pos[0]),
-                     (ray_length * base_ray[1] / norm_ray + cube_pos[1]),
-                     (ray_length * base_ray[2] / norm_ray + cube_pos[2])
-                     ]
-                )
-                                        ))
+        ray_vects = grid_vision(cube_pos,cube_ori,ray_length=10)
 
         # tracé du rayon / faudra changer avec rayTestBatch() quand on aura plus de rayons
         contact_results = []
@@ -101,13 +73,8 @@ class AlbertCube(Cube):
 
         # dans les resultats [0] : hitObjectId // [3] hit position
         # faudra changer les coordonnées de globales à locales
-        """
-        for n in range(21):
-            if contact_results[n][0][0] != -1:
-                p.addUserDebugLine(cube_pos, contact_results[n][0][3], [0, 1, 0], 2, 0.05)
-            else:
-                p.addUserDebugLine(cube_pos, ray_vects[n], [1, 0, 0], 2, 0.05)
-        """
+
+        show_grid(ray_vects,contact_results,cube_pos)# if visible rays are needed
 
         return contact_results
 
@@ -334,3 +301,43 @@ def euler_to_rotation_matrix(euler):
     ])
 
     return rotation_matrix
+
+def grid_vision(cube_pos,cube_ori,ray_length=10):
+    matrice_ori = euler_to_rotation_matrix(cube_ori)
+    ray_length = 5
+    cube_pos_array = np.array([cube_pos for _ in range(7)])
+
+    # départ des angles :
+    dep_angles_yaw = -35 * np.pi / 180
+    dep_angles_pitch = -10 * np.pi / 180
+    # Pas yaw pour 70°
+    step_yaw = 70 / 6
+    step_yaw_rad = step_yaw * np.pi / 180
+
+    # pas pitch pour 20°
+    step_pitch = 20 / 2
+    step_pitch_rad = step_pitch * np.pi / 180
+
+    # rayVec1 : premier rayon droit devant le cube
+    ray_vects = []
+    for i in range(3):
+        for n in range(7):
+            base_ray = [np.cos(n * step_yaw_rad + dep_angles_yaw) * np.cos(i * step_pitch_rad + dep_angles_pitch),
+                        np.sin(n * step_yaw_rad + dep_angles_yaw), np.sin(i * step_pitch_rad + dep_angles_pitch)]
+            norm_ray = np.linalg.norm(base_ray)
+            ray_vects.append(np.dot(matrice_ori, np.array(
+                [(base_ray[0] / norm_ray * ray_length + cube_pos[0]),
+                 (ray_length * base_ray[1] / norm_ray + cube_pos[1]),
+                 (ray_length * base_ray[2] / norm_ray + cube_pos[2])
+                 ]
+            )
+                                    ))
+    return ray_vects
+
+def show_grid(ray_vects,contact_results,cube_pos):
+
+    for n in range(21):
+        if contact_results[n][0][0] != -1:
+            p.addUserDebugLine(cube_pos, contact_results[n][0][3], [0, 1, 0], 2, 0.05)
+        else:
+            p.addUserDebugLine(cube_pos, ray_vects[n], [1, 0, 0], 2, 0.05)
