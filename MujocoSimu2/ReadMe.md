@@ -49,9 +49,9 @@ step(dt) = 0.001. s
 
 #### variables:
 x_jumping_factor : 
-- 1 : saut vers l'avant
-- 0 : saut sur place
-- -1 : saut vers l'arrière
+- 1 : jump forward
+- 0 : jump on the spot
+- -1 : jump backward
 
 jump force : i = 13000
 
@@ -60,6 +60,7 @@ jump force : i = 13000
 
 ### How does the move work :
 forward : impulse $step * [250,0,0]_{Albert's Referential}$ (in N)
+
 backward : impulse $step * [-250,0,0]_{Albert's Referential}$ (in N)
 
 
@@ -114,7 +115,7 @@ x=1 for the right type of object and x=0 elsewhere
 ## Equations used : 
 
 ### Forward Dynamic equation :
-> - $$M(dv/dt) + c = τ  $$
+> - $$M(dv/dt) + c =s τ  $$
 > - M : joint space inertia matrix, c = bias forces,τ = applied force
 > - $v_{t+Δt} = v_t + a_t * Δt = v_t + (F_{ext} + F_c)/m * Δt = v_t + F_{ext}/m * Δt + impulse_c/m$
 > - $x_{t+Δt} = x_t + v_{t+Δt}*Δt$
