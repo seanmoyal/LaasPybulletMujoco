@@ -115,7 +115,7 @@ x=1 for the right type of object and x=0 elsewhere
 ## Equations used : 
 
 ### Forward Dynamic equation :
-> - $$M(dv/dt) + c =s τ  $$
+> - $M(dv/dt) + c =s τ  $
 > - M : joint space inertia matrix, c = bias forces,τ = applied force
 > - $v_{t+Δt} = v_t + a_t * Δt = v_t + (F_{ext} + F_c)/m * Δt = v_t + F_{ext}/m * Δt + impulse_c/m$
 > - $x_{t+Δt} = x_t + v_{t+Δt}*Δt$
