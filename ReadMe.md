@@ -28,7 +28,7 @@
 > pip install stable-baselines3
 
 
-## For More information :
+## For more information :
 ### go to PybulletSimu/ReadMe.md for Pybullet
 
 ### go to MujocoSimu2/ReadMe.md for Mujoco

@@ -52,10 +52,11 @@ new_ori : Albert's current orientation
 #### jump phases :
 
 Upward :
-- beginning of the jump : impulse $step * [500 * xFactor,0,1000]_{Albert's Referential}$ (N)
-- ascension : impulse $step * [500 * xFactor * cos(newOri - oriJump), -500 * xFactor * sin(newOri - oriJump), 1000]_{Albert's Referential}$ ( in N)
+- beginning of the jump : impulse : $step * [500 * xFactor,0,1000]_{Albert's Referential}$ (N)
+- ascension : impulse : $step * [500 * xFactor * cos(newOri - oriJump), -500 * xFactor * sin(newOri - oriJump), 1000]_{Albert's Referential}$ ( in N)
 
-Downward : impulse $step * [500 * xFactor * cos(newOri - oriJump), -500 * xFactor * sin(newOri - oriJump), -1000]_{Albert's Referential}$ ( in N )
+Downward :
+- impulse : $step * [500 * xFactor * cos(newOri - oriJump), -500 * xFactor * sin(newOri - oriJump), -1000]_{Albert's Referential}$ ( in N )
 
 ### How does the move work : 
 forward : impulse $step * [250,0,0]_{Albert's Referential}$ (in N)
