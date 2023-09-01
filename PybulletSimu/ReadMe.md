@@ -60,6 +60,7 @@ Downward :
 
 ### How does the move work : 
 forward : impulse $step * [250,0,0]_{Albert's Referential}$ (in N)
+
 backward : impulse $step * [-250,0,0]_{Albert's Referential}$ (in N)
 
 ### Raycasting characteristics : 

@@ -213,11 +213,11 @@ class AlbertCube(Cube):
         if len(self.memory_state) < 5:
             self.memory_state.append(current_state)
         else:
-            self.memory_state[0] = self.memory_state[1]
-            self.memory_state[1] = self.memory_state[2]
-            self.memory_state[2] = self.memory_state[3]
-            self.memory_state[3] = self.memory_state[4]
-            self.memory_state[4] = current_state
+            self.memory_state[0] = self.memory_state[1].copy()
+            self.memory_state[1] = self.memory_state[2].copy()
+            self.memory_state[2] = self.memory_state[3].copy()
+            self.memory_state[3] = self.memory_state[4].copy()
+            self.memory_state[4] = current_state.copy()
 
     def get_previous_state(self):
         if (len(self.memory_state) <= 1):

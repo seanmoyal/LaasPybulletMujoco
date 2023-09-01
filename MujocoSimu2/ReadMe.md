@@ -32,6 +32,7 @@ It's the MJCF file describing Albert
 
 ### Initial conditions :
 Albert's initial position :  Randomized with y ∈ [1;5] et x ∈ [1;3]
+
 Initial orientation : Randomized with z ∈ [-pi,pi] (Euler)
 
 ### Gravity : 
