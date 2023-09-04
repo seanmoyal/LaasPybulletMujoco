@@ -110,9 +110,9 @@ class Room:  # classe d'une chambre ( niveau )
             self.door_array[1].close(self.door_array[0])
 
 
-def translate(Id,
+def translate(id,
               translation):  # fonction de translation utilisiée dans changeGlobalCoord(), translate un objet d'identifiant Id
-    old_position, orientation = p.getBasePositionAndOrientation(Id)
+    old_position, orientation = p.getBasePositionAndOrientation(id)
 
     new_position = [
         old_position[0] + translation[0],
@@ -120,4 +120,4 @@ def translate(Id,
         old_position[2] + translation[2]
     ]
 
-    p.resetBasePositionAndOrientation(Id, new_position, orientation)
+    p.resetBasePositionAndOrientation(id, new_position, orientation)

@@ -2,7 +2,6 @@ from gym_examples.gym_examples.envs.AlbertEnv import AlbertEnv
 
 
 
-#env = gym.make('gym_examples/Albert-v0')
 env = AlbertEnv()
 env.reset()
 

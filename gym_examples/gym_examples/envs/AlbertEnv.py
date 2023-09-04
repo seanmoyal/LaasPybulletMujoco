@@ -61,13 +61,12 @@ class AlbertEnv(gym.Env):
 
         # Observation courante
         self.current_obs = None
-        self.previous_obs = None
 
         # done
         self.time_episode = 10  # 10 secs
         self.time_passed = 0
 
-        pass
+
 
     def step(self, action):
         # given current obs and action returns the next observation, the reward, done and optionally additional info
@@ -80,9 +79,9 @@ class AlbertEnv(gym.Env):
         # compute reward
         reward = 0
         contact = self.curr_state["contactPoints"]
-        if action[2] == JumpType.JUMP:
+        if action[2] == JumpType.JUMP.value:
             reward -= 0.05
-        if (ObjectType.WALL in contact or ObjectType.FENCE in contact or ObjectType.IBLOCK in contact):
+        if (ObjectType.WALL.value in contact or ObjectType.FENCE.value in contact or ObjectType.IBLOCK.value in contact):
             reward -= 0.1
         if (self.achieved_maze()):
             reward += 1

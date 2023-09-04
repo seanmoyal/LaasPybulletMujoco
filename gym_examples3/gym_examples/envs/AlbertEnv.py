@@ -61,7 +61,6 @@ class AlbertEnv(gym.Env):
         self.rng = default_rng()
 
         self.current_obs = None
-        self.previous_obs = None
 
 
         self.time_episode = 20  # in seconds
@@ -70,10 +69,10 @@ class AlbertEnv(gym.Env):
         self.step_count=0
         self.subcount = 0
         self._count=0
-        pass
+
 
     def step(self, action):#time step 1millisecond
-
+        print(action)
         #self._count = time.time()
         # given current obs and action returns the next observation, the reward, done and optionally additional info
         self.character.take_action(action)
@@ -93,9 +92,9 @@ class AlbertEnv(gym.Env):
         # compute reward
         reward = 0
         contact = self.curr_state["contactPoints"]
-        if action[1] == MoveType.NO_MOVE:
+        if action[1] == MoveType.NO_MOVE.value:
             reward-=0.05
-        if action[2] == JumpType.JUMP: # for it not to jump all the time
+        if action[2] == JumpType.JUMP.value: # for it not to jump all the time
             reward -= 0.05
         for i in range(105):
                     if self.current_obs[i*6+1]==1:
@@ -130,7 +129,7 @@ class AlbertEnv(gym.Env):
         # these paremeters will need a change following the change of the room's or albert's characteristics
         # since these positions are those of the center of mass
         room = self.character.room_manager.room_array[self.character.actual_room]
-        room.reset_room(self.model, self.character)
+        room.reset_room(self.model)
 
         x_alb = self.rng.uniform(1, 5)
         y_alb = self.rng.uniform(1, 8)

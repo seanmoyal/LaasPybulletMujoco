@@ -12,9 +12,6 @@ class Room:  # classe d'une chambre ( niveau )
         self.iblocks_array = []
         self.fences_array = []
         self.door_array = {}
-        self.depth = 6
-        self.width = 11
-        self.height = 3
         self.init_room(model, name)
 
         # DEFINITION DU STATE :
@@ -72,8 +69,7 @@ class Room:  # classe d'une chambre ( niveau )
             if not a:
                 self.door_array[1].open(model)
 
-    def reset_room(self, model,
-                   character):  # dans la vidéo chaque simu se termine après 10s, on appelera cette fo après 10 s de simu
+    def reset_room(self, model):  # dans la vidéo chaque simu se termine après 10s, on appelera cette fo après 10 s de simu
         # Evidemment elle est à compléter
         for id_button in self.buttons_array.keys():
             if self.buttons_array[id_button].is_pressed == True:

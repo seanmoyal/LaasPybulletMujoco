@@ -116,7 +116,7 @@ class AlbertCube(Cube):
         move = action[1]
         jump = action[2]
         self.yaw_turn(rotate)
-        if ObjectType.FLOOR in self.current_state["contactPoints"]:
+        if ObjectType.FLOOR.value in self.current_state["contactPoints"]:
             self.move(move)
             self.jump(jump, move)
         self.current_state = self.get_current_state()
@@ -133,7 +133,7 @@ class AlbertCube(Cube):
                 type = self.check_type(contact_results[i][0][0], room)
                 distance = self.calc_distance(contact_results[i][0][0])
                 current_observation[21 + i] = distance
-                current_observation[i] = type.value
+                current_observation[i] = type
 
         # POUR L INSTANT ON VIRE Z DE L OBSERVATION
 
@@ -147,21 +147,21 @@ class AlbertCube(Cube):
     def check_type(self, id, room):
         buttons = room.buttons_array.keys()
         if id in buttons:
-            return ObjectType.BUTTON
+            return ObjectType.BUTTON.value
 
         if id in room.floor_array:
-            return ObjectType.FLOOR
+            return ObjectType.FLOOR.value
 
         if id in room.wall_array:
-            return ObjectType.WALL
+            return ObjectType.WALL.value
 
         fences = room.fences_array.keys()
         if id in fences:
-            return ObjectType.FENCE
+            return ObjectType.FENCE.value
 
         iblocks = room.iblocks_array.keys()
         if id in iblocks:
-            return ObjectType.IBLOCK
+            return ObjectType.IBLOCK.value
 
     def calc_distance(self, id):################ FONCTION JUSTE DANS PYBULLET
         pos_object = p.getBasePositionAndOrientation(id)[0]
@@ -225,12 +225,12 @@ class AlbertCube(Cube):
                 if id not in ids:
                     contact_types.append(type)
                     ids.append(id)
-                if type == ObjectType.BUTTON:
+                if type == ObjectType.BUTTON.value:
                     pushed_button = self.room_manager.room_array[0].buttons_array.get(id)
                     if (pushed_button.is_pressed == False):
                         pushed_button.got_pressed(id)
             while (len(contact_types) < 6):
-                contact_types.append(ObjectType.NONE)
+                contact_types.append(ObjectType.NONE.value)
             current_state["contactPoints"] = contact_types
 
         self.room_manager.room_array[self.actual_room].check_buttons_pushed()
@@ -278,9 +278,8 @@ def euler_to_rotation_matrix(euler):
 
     return rotation_matrix
 
-def grid_vision(cube_pos,cube_ori,ray_length=10):
+def grid_vision(cube_pos,cube_ori,ray_length=5):
     matrice_ori = euler_to_rotation_matrix(cube_ori)
-    ray_length = 5
     cube_pos_array = np.array([cube_pos for _ in range(7)])
 
     # départ des angles :

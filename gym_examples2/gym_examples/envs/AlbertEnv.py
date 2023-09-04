@@ -108,7 +108,7 @@ class AlbertEnv(gym.Env):
         # faudra changer ces params selon la taille d'albert et de la salle
         # car les positions correspondet a la position du centre de masse
         room = self.character.room_manager.room_array[self.character.actual_room]
-        room.reset_room(self.model, self.character)
+        room.reset_room(self.model)
 
         x_alb = self.rng.uniform(1, 5)
         y_alb = self.rng.uniform(1, 3)

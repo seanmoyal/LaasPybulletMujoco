@@ -69,18 +69,18 @@ class AlbertCube(Cube):
         for n in range(21):
             obs.append([body_types[n], contact_results[n]])
 
-        show_grid(viewer,cube_pos,ray_vects) # if visible rays are needed
+        #show_grid(viewer,cube_pos,ray_vects) # if visible rays are needed
 
         return obs
 
     def jump(self, jump, move):
         i = 13000  # force du jump sur un pas
         move_x = 0
-        if move == MoveType.BACKWARD_MOVE:
+        if move == MoveType.BACKWARD_MOVE.value:
             move_x = -1
-        elif move == MoveType.FORWARD_MOVE:
+        elif move == MoveType.FORWARD_MOVE.value:
             move_x = 1
-        if jump == JumpType.JUMP:
+        if jump == JumpType.JUMP.value:
             if self.in_contact_with_floor_or_button():
                 self.start_jumping = True
         if self.start_jumping:
@@ -93,19 +93,21 @@ class AlbertCube(Cube):
 
     def yaw_turn(self, rotate): # fonction de rotation d'albert
         move_z = 0
-        if rotate == TurnType.LEFT_TURN:
+        print("rotate : "+str(rotate))
+        if rotate == TurnType.LEFT_TURN.value:
             move_z = -1
-        elif rotate == TurnType.RIGHT_TURN:
+        elif rotate == TurnType.RIGHT_TURN.value:
             move_z = 1
         angular_velocity = [0, 0, 2 * move_z]  # mz=1/0/-1
+        print("angular velocity : "+str(angular_velocity))
         self.data.qvel[3:6] = angular_velocity
 
 
     def move(self, move):  # fonction définissant les mouvements sur le sol
         move_x = 0
-        if move == MoveType.BACKWARD_MOVE:
+        if move == MoveType.BACKWARD_MOVE.value:
             move_x = -1
-        elif move == MoveType.FORWARD_MOVE:
+        elif move == MoveType.FORWARD_MOVE.value:
             move_x = 1
         linear_velocity = [move_x * 300, 0, 0]
         ori = self.data.xquat[self.id]
@@ -117,13 +119,13 @@ class AlbertCube(Cube):
             self.data.xfrc_applied[self.id] = impulse
 
     def take_action(self, action):  # 1: rotate, 2 : move, 3 : jump # fonction de traitement de l'action à effectuer
+
         rotate = action[0]
         move = action[1]
         jump = action[2]
         self.yaw_turn(rotate)
-        if ObjectType.FLOOR in self.current_state["contactPoints"]:
-            self.move(move)
-            self.jump(jump, move)
+        self.move(move)
+        self.jump(jump, move)
         self.current_state = self.get_current_state()
 
 
@@ -139,7 +141,7 @@ class AlbertCube(Cube):
                 type = contact_results[i][0]
                 distance = contact_results[i][1]
                 current_observation[21 + i] = distance
-                current_observation[i] = type.value
+                current_observation[i] = type
 
         self.add_to_memory_observation(current_observation)
         observation = self.flat_memory()
@@ -148,26 +150,26 @@ class AlbertCube(Cube):
     def check_type(self, id, room): # retourne à quel type d'objet l'id fait référence
         buttons = room.buttons_array.keys()
         if id in buttons:
-            return ObjectType.BUTTON
+            return ObjectType.BUTTON.value
 
         if id in room.floor_array:
-            return ObjectType.FLOOR
+            return ObjectType.FLOOR.value
 
         if id in room.wall_array:
-            return ObjectType.WALL
+            return ObjectType.WALL.value
 
         fences = room.fences_array
         if id in fences:
-            return ObjectType.FENCE
+            return ObjectType.FENCE.value
 
         iblocks = room.iblocks_array
         if id in iblocks:
-            return ObjectType.IBLOCK
+            return ObjectType.IBLOCK.value
         if id == room.door_array[0]:
             if room.door_array[1].is_opened: # si porte ouverte : considérée comme un boutton
-                return ObjectType.BUTTON
-            return ObjectType.WALL # sinon considérée comme un mur
-        return ObjectType.NONE
+                return ObjectType.BUTTON.value
+            return ObjectType.WALL.value # sinon considérée comme un mur
+        return ObjectType.NONE.value
 
 
 
@@ -227,7 +229,7 @@ class AlbertCube(Cube):
                 if id not in ids:
                     contact_types.append(type)
                     ids.append(id)
-                if type == ObjectType.BUTTON:
+                if type == ObjectType.BUTTON.value:
                     if id == self.room_manager.room_array[self.actual_room].door_array[0]:
                         if self.room_manager.room_array[self.actual_room].door_array[1].is_opened:
                             continue
@@ -235,7 +237,7 @@ class AlbertCube(Cube):
                     if (pushed_button.is_pressed == False):
                         pushed_button.got_pressed(self.model)
             while (len(contact_types) < 6):
-                contact_types.append(ObjectType.NONE)
+                contact_types.append(ObjectType.NONE.value)
             current_state["contactPoints"] = contact_types
 
         self.room_manager.room_array[self.actual_room].check_buttons_pushed(self.model)
@@ -280,7 +282,7 @@ class AlbertCube(Cube):
         for i in range(n):
             a = self.check_type(contact_points[i][0], self.room_manager.room_array[self.actual_room])
 
-            if a == ObjectType.FLOOR or a == ObjectType.BUTTON:
+            if a == ObjectType.FLOOR.value or a == ObjectType.BUTTON.value:
                 return True
         return False
 

@@ -36,7 +36,6 @@ for ep in range(episodes):
 
         env.render()
         current_obs, reward, done, info = env.step(action_debug())
-        print(reward)
         #current_obs, reward, done, info = env.step(env.action_space.sample())
 
 
