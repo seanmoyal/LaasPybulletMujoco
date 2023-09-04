@@ -104,7 +104,7 @@ class Room:  # classe d'une chambre ( niveau )
         base_orientation = p.getQuaternionFromEuler([0, 0, 0])
         base_position = [self.global_coord[0] + self.depth / 2, self.global_coord[1] + 1, self.global_coord[2] + 1]
         p.resetBasePositionAndOrientation(character.id, base_position, base_orientation)
-        character.reset_time()
+
 
         if self.door_array[1].is_opened:
             self.door_array[1].close(self.door_array[0])

@@ -15,7 +15,6 @@ class AlbertCube(Cube):
         self.model = model                     # mujoco's model struct
         self.id = self.model.body("Albert").id
         self.geom = self.model.body(self.id).geomadr[0]
-        self.time = 0                          # time spent in simulation since the beginning
 
         # state space ( Albert doesn't have it's acces )
         self.memory_state = []                        # stacking the last 5 states
@@ -34,16 +33,6 @@ class AlbertCube(Cube):
         pos = self.data.xpos[self.id]
         return pos[2] < self.room_manager.room_array[self.actual_room].global_coord[2]
 
-    def add_time(self, step):
-        self.time += step
-
-    def has_time(self): # (25 seconds ?)
-        if self.time >= 4:
-            self.room_manager.room_array[self.actual_room].reset_room(self)
-
-    def reset_time(self): # reset le temps
-        self.time = 0
-
     def reset_position_orientation(self, pos, ori_euler):
         ori_quaternion = quaternion_from_euler(ori_euler)
         room_coord = self.room_manager.room_array[self.actual_room].global_coord
@@ -51,15 +40,6 @@ class AlbertCube(Cube):
         self.data.qpos[0:3] = new_pos
         self.data.qpos[3:7] = ori_quaternion
 
-
-    def has_succeded(self):
-        char_pos = self.data.xpos[self.id]
-        room = self.room_manager.room_array[self.actual_room]
-        end_pos_j = room.global_coord[1] + room.width
-        if char_pos[1] > end_pos_j:
-            room.door_array[1].close(room.door_array[0])
-            self.actual_room += 1
-            self.reset_time()
 
     def raycasting(self, viewer):
         cube_pos = self.data.xpos[self.id]
@@ -146,8 +126,6 @@ class AlbertCube(Cube):
             self.jump(jump, move)
         self.current_state = self.get_current_state()
 
-    def get_id(self):
-        return self.id
 
     def get_observation(self, viewer): # fonction retournant l'observation d'albert actualisé
         contact_results = self.raycasting(viewer)
@@ -191,13 +169,7 @@ class AlbertCube(Cube):
             return ObjectType.WALL # sinon considérée comme un mur
         return ObjectType.NONE
 
-    def calc_distance(self, id):  # calcul de distance entre un objet et albert
-        pos_object = self.model.geom(id).pos
-        pos_albert = self.data.xpos[self.id]
 
-        distance = np.sqrt(sum([(pos_albert[i] - pos_object[i]) ** (2) for i in range(3)]))
-
-        return distance
 
     def add_to_memory_observation(self, current_observation):  # ajout de l'observation courante à la liste des 5 dernieres observations
         if len(self.memory_observation) < 5:
@@ -285,7 +257,7 @@ class AlbertCube(Cube):
         return obs
 
     def get_contact_points(self): # retourne les identifiants des objets en contact avec albert
-
+    ################## FONCTION JUSTE DANS MUJOCO
         n = len(self.data.contact.geom1)
         contact_points = []
         for i in range(n):
@@ -300,7 +272,7 @@ class AlbertCube(Cube):
                     contact_points.append(body_id)
         return contact_points
 
-    def in_contact_with_floor_or_button(self): # retourne true si albert est en contact avec le sol ou un boutton
+    def in_contact_with_floor_or_button(self): ############## FONCTION JUSTE MUJOCO MAIS TRANSPOSABLE A PYBULLET
         contact_points = self.get_contact_points()
         n = len(contact_points)
         if n == 0:
@@ -312,7 +284,7 @@ class AlbertCube(Cube):
                 return True
         return False
 
-    def binarize_type(self,type):
+    def binarize_type(self,type):######### JUSTE DANS MUJOCO
         type_bin=np.zeros((6,))
         type_bin[type]=1
         return type_bin

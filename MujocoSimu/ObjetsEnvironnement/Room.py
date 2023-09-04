@@ -82,7 +82,7 @@ class Room:  # classe d'une chambre ( niveau )
             # truc a changer au dessus, jsp pq mais ca reset pas à la bonne hauteur
             # p.changeVisualShape(id_button,-1,rgbaColor=[0,1,0,1])
             self.buttons_array[id_button].is_pressed = False
-        character.reset_time()
+
 
         if self.door_array[1].is_opened:
             self.door_array[1].close(model)

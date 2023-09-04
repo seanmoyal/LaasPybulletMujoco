@@ -11,8 +11,6 @@ class AlbertCube(Cube):
         self.room_manager = room_manager
         self.id = self.create_cube(pos=[2, 2, 1], orient_euler=[0, 0, 0], mass=1)
 
-        self.time = 0
-
         # DEFINITION DU STATE ( albert n'y a pas acces)
         self.memory_state = []
         self.current_state = self.get_current_state()
@@ -30,36 +28,17 @@ class AlbertCube(Cube):
         pos, ori = p.getBasePositionAndOrientation(self.id)
         return pos[2] < self.room_manager.room_array[self.actual_room].global_coord[2]
 
-    def add_time(self, step):
-        self.time += step
-
-    def has_time(self):
-        if self.time >= 4:
-            self.room_manager.room_array[self.actual_room].reset_room(self)
-
-    def reset_time(self):
-        self.time = 0
-
-    def create_cube(self, pos, orient_euler, mass):
+    def create_cube(self, pos, orient_euler, mass):################ FONCTION JUSTE DANS PYBULLET
         room_coord = self.room_manager.room_array[self.actual_room].global_coord
         newPos = [pos[0] + room_coord[0], pos[1] + room_coord[1], pos[2] + room_coord[2]]
         return super().create_cube(newPos, orient_euler, mass)
 
-    def reset_pos_ori(self, pos, ori_euler):
+    def reset_position_orientation(self, pos, ori_euler):
         ori_quaternion = p.getQuaternionFromEuler(ori_euler)
         room_coord = self.room_manager.room_array[self.actual_room].global_coord
         new_pos = [pos[0] + room_coord[0], pos[1] + room_coord[1], pos[2] + room_coord[2]]
         p.resetBasePositionAndOrientation(self.id, new_pos, ori_quaternion)
 
-    # hasSucceded c'est de la triche
-    def has_succeded(self):
-        char_pos, ori = p.getBasePositionAndOrientation(self.id)
-        room = self.room_manager.room_array[self.actual_room]
-        end_pos_j = room.global_coord[1] + room.width
-        if char_pos[1] > end_pos_j:
-            room.door_array[1].close(room.door_array[0])
-            self.actual_room += 1
-            self.reset_time()
 
     def raycasting(self):
         cube_pos, ori = p.getBasePositionAndOrientation(self.id)
@@ -142,9 +121,6 @@ class AlbertCube(Cube):
             self.jump(jump, move)
         self.current_state = self.get_current_state()
 
-    def get_id(self):
-        return self.id
-
     def get_observation(self):
         contact_results = self.raycasting()
         current_observation = np.empty(42)
@@ -187,7 +163,7 @@ class AlbertCube(Cube):
         if id in iblocks:
             return ObjectType.IBLOCK
 
-    def calc_distance(self, id):
+    def calc_distance(self, id):################ FONCTION JUSTE DANS PYBULLET
         pos_object = p.getBasePositionAndOrientation(id)[0]
         pos_albert = p.getBasePositionAndOrientation(self.id)[0]
 
@@ -225,7 +201,7 @@ class AlbertCube(Cube):
         current_state = {}
         pos_albert = p.getBasePositionAndOrientation(self.id)[0]
         buttons = room.buttons_array.values()
-        buttons = binarize(buttons)
+        buttons = binarize_button_states(buttons)
         door = np.prod(buttons)
         door_pos = p.getBasePositionAndOrientation(room.door_array[0])[0]
 
@@ -274,7 +250,7 @@ class AlbertCube(Cube):
         return obs
 
 
-def binarize(buttons):
+def binarize_button_states(buttons):
     list = []
     for button in buttons:
         if button.is_pressed:

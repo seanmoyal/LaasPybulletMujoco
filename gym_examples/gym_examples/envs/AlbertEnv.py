@@ -116,7 +116,7 @@ class AlbertEnv(gym.Env):
         oriEuler = [0, 0, self.rng.uniform(-np.pi, np.pi)]
 
         # A CHANGER ICI PSQ ON UTILISE PYBULLET ET FAUT QUE CA MARCHE PARTOUT
-        self.character.reset_pos_ori([xAlb, yAlb, zAlb], oriEuler)
+        self.character.reset_position_orientation([xAlb, yAlb, zAlb], oriEuler)
 
         self.current_obs = self.character.get_observation()
         # faire une requete pour chopper les raycasts
