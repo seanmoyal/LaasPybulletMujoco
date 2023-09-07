@@ -347,3 +347,85 @@ The function is structured of 3 parts :
 note that this part is done in the raycasting() function for Mujoco but in get_observation() for Pybullet
 
 ## <ins>V - Specificities of each Simulator<ins/>
+### <ins>Pybullet<ins/>
+#### Environment characteristics :
+Gravity : g = -100 m/s²
+
+Albert's mass : m = 10 kg
+
+Integration step :step(dt) = 1/240 s
+
+>Difference in the Observation Space : (type[0],...,type[104],distance[0],...,distance[104])
+> 
+>with type = [0,1,2,3,4,5] = [none,button,ground,wall,fence,iblock]
+
+>Difference in reward computation : 
+>- -0.05 if Albert jumps
+>- -0.1 if Albert has a contact with a wall,fence or iblock
+>- -0.5 if Albert falls off the level
+>- +1 if Albert achieves the maze
+>- +1 if Albert pushes a button
+
+
+#### Difference in grid_vision : 
+ -  yaw : 7 rays covering 70° in [-35°,35°]
+ - pitch : 3 rays covering 20° in [-10°,10°]
+
+
+#### Equations used : 
+
+**Semi-Explicit Euler :**
+> - **F = m*a**
+> - $(τ = I * (dω/dt) + ω * I*ω)$
+> - $v_{t+Δt} = v_t + a * Δt = v_t + (F_{ext} + F_c)/m * Δt = v_t + F_{ext}/m * Δt + impulse_c/m$
+> - $x_{t+Δt} = x_t + v_{t+Δt}*Δt$
+>
+$F_{ext}$ : gravity, wind force field, user forces ...
+
+$F_c$ : constraint forces such as contact, friction, joints
+
+> the p.applyExternalForce() function takes as a parameter an array[x,y,z] in Newtons (N)
+
+ It's an impulse : (F*step)
+
+**Friction :** 
+
+> linear damping : $F_{damping} = - v_{albert} * linearDampingCoef$
+> 
+> linear_damping_coef = 4 kg/s
+
+> angular damping : $τ_{damping} = - ω_{albert} * angularDampingCoef$
+> 
+> angular_damping_coef = 4 kg*m^2/s
+
+### <ins>Mujoco<ins/>
+
+#### Environment characteristics :
+
+Gravity : g = -10 m/s²
+
+Albert's mass : m = 10 kg
+
+Integration Steps : step(dt) = 0.001. s
+
+>Difference in the Observation Space : (type[0],...,type[630],distance[0],...,distance[104])
+> 
+>with type[i:i+6] = [x,x,x,x,x,x] = [none,button,ground,wall,fence,Iblock]
+> 
+> x=1 for the right type of object and x=0 elsewhere
+
+>Difference in reward computation : 
+>- -0.05 if Albert jumps
+>- -0.05 if Albert doesn't move
+>- -0.1 if Albert has a contact with a wall,fence or iblock
+>- -0.5 if Albert falls off the level
+>- +0.03 for each ray that perceives a button
+>- +2 if Albert achieves the maze
+>- +1+(1-time_spent_in_simu/time_episode) if Albert pushes a button ( the faster he gets to it the more reward he gets )
+
+
+
+#### Difference in grid_vision : 
+ -  yaw : 7 rays covering 70° in [-35°,35°]
+ - pitch : 3 rays covering 15° in [-12°,+3°]
+
