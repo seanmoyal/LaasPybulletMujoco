@@ -66,9 +66,9 @@ class AlbertCube(Cube):
             move_x = 1
         if jump == JumpType.JUMP.value:
             self.still_jumping = True
-            if len(p.getContactPoints(self.id)) != 0:
+            if len(p.getContactPoints(self.id)) != 0: # probleme ici, faut preciser que touche pas sol ou mur
                 self.jumping = True
-
+        print("AAAAAAAAAAAAAAAAAAAAAAAAAAA : "+str(self.still_jumping))
         new_ori = p.getEulerFromQuaternion(p.getBasePositionAndOrientation(self.id)[1])[2]
 
         if self.jumping:
@@ -77,7 +77,7 @@ class AlbertCube(Cube):
             impulse = [500 * self.x_factor, 0, i]
             p.applyExternalForce(self.id, -1, impulse, [0, 0, 0], p.LINK_FRAME)
             self.count += 1
-            jumping = False
+            self.jumping = False
         elif (not self.jumping and self.still_jumping):
             if (self.count >= 1 and self.count <= 100):
                 impulse = [500 * self.x_factor * np.cos(new_ori - self.ori_jump),
@@ -86,9 +86,10 @@ class AlbertCube(Cube):
                 self.count += 1
             elif (len(p.getContactPoints(self.id)) == 0):
                 impulse = [500 * self.x_factor * np.cos(new_ori - self.ori_jump),
-                           -500 * self.xFactor * np.sin(new_ori - self.ori_jump), -i]
+                           -500 * self.x_factor * np.sin(new_ori - self.ori_jump), -i]
                 p.applyExternalForce(self.id, -1, impulse, [0, 0, 0], p.LINK_FRAME)
-            elif (len(p.getContactPoints(self.id)) != 0):  # a changer pour pas qu'il rebondisse sur les murs
+            elif (len(p.getContactPoints(self.id)) != 0):  # pb du fait du contact cest jamais valide
+                print("yaaaaaaaaaaaaaaaaaaaaas")
                 self.x_factor = 0
                 self.still_jumping = False
                 self.count = 0
@@ -141,7 +142,6 @@ class AlbertCube(Cube):
         # current_observation.append(z)
         self.add_to_memory_observation(current_observation)
         obs = self.flat_memory()
-        print(obs)
         return obs
 
     def check_type(self, id, room):

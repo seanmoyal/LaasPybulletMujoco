@@ -69,7 +69,7 @@ class AlbertCube(Cube):
         for n in range(21):
             obs.append([body_types[n], contact_results[n]])
 
-        #show_grid(viewer,cube_pos,ray_vects) # if visible rays are needed
+        show_grid(viewer,cube_pos,ray_vects) # if visible rays are needed
 
         return obs
 
@@ -385,7 +385,7 @@ def grid_vision(character_pos,character_ori,ray_length): #retourne la position d
 
             a[0] += character_pos[0]
 
-            a[1] += character_ori[1]
+            a[1] += character_pos[1]
             a[2] += character_pos[2]
 
             ray_vects.append(a)
