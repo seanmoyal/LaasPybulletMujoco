@@ -348,12 +348,17 @@ note that this part is done in the raycasting() function for Mujoco but in get_o
 
 ## <ins>V - Specificities of each Simulator<ins/>
 ### <ins>Pybullet<ins/>
+https://pybullet.org/wordpress/
 #### Environment characteristics :
+
+---
 Gravity : g = -100 m/s²
 
 Albert's mass : m = 10 kg
 
 Integration step :step(dt) = 1/240 s
+
+---
 
 >Difference in the Observation Space : (type[0],...,type[104],distance[0],...,distance[104])
 > 
@@ -366,11 +371,20 @@ Integration step :step(dt) = 1/240 s
 >- +1 if Albert achieves the maze
 >- +1 if Albert pushes a button
 
+#### Raycasting : 
+
+---
+#### Difference in what raycasting() returns : 
+
+[[id_0,distance_0],...,[id_21,distance_21]]
+
+this array is converted into  : [[type_0,distance_0],...,[type_21,distance_21]] in the get_observation() function
 
 #### Difference in grid_vision : 
  -  yaw : 7 rays covering 70° in [-35°,35°]
  - pitch : 3 rays covering 20° in [-10°,10°]
 
+---
 
 #### Equations used : 
 
@@ -398,7 +412,16 @@ $F_c$ : constraint forces such as contact, friction, joints
 > 
 > angular_damping_coef = 4 kg*m^2/s
 
+#### Room Creation
+
+---
+The Room is Manually added in AlbertEnv.__init__()
+
+you can directly change the configuration of the room by adding elements in it
+
+---
 ### <ins>Mujoco<ins/>
+https://mujoco.readthedocs.io/en/latest/overview.html
 
 #### Environment characteristics :
 
@@ -406,7 +429,7 @@ Gravity : g = -10 m/s²
 
 Albert's mass : m = 10 kg
 
-Integration Steps : step(dt) = 0.001. s
+Integration Steps : step(dt) = 0.001. s - To change this value, modify
 
 >Difference in the Observation Space : (type[0],...,type[630],distance[0],...,distance[104])
 > 
@@ -425,7 +448,60 @@ Integration Steps : step(dt) = 0.001. s
 
 
 
+#### Raycasting : 
+
+---
+#### Difference in what raycasting() returns : 
+
+[[type,distance_0],...,[type_21,distance_21]]
+
 #### Difference in grid_vision : 
  -  yaw : 7 rays covering 70° in [-35°,35°]
- - pitch : 3 rays covering 15° in [-12°,+3°]
+ - pitch : 3 rays covering 20° in [-12°,+3°]
 
+---
+
+
+#### Equations used : 
+
+---
+#### Forward Dynamic equation :
+> - $M(dv/dt) + c =s τ  $
+> - M : joint space inertia matrix, c = bias forces,τ = applied force
+> - $v_{t+Δt} = v_t + a_t * Δt = v_t + (F_{ext} + F_c)/m * Δt = v_t + F_{ext}/m * Δt + impulse_c/m$
+> - $x_{t+Δt} = x_t + v_{t+Δt}*Δt$
+>
+$F_{ext}$ : gravity, wind force field, user forces ...
+
+$F_c$ : constraint forces such as contact, friction, joints
+
+> the data.xfrx_applied[id] value has as value an array[x,y,z] in Newtons (in N)
+
+It's an impulse (F*step)
+
+#### Friction : 
+
+in xmlDirectory/Actor.xml :
+damping = 1
+diaginertia = [0.001 0.001 0.001]
+
+---
+
+#### Room Creation
+
+---
+The Room is Manually added in AlbertEnv.__init__()
+
+AAAAAAAAAA CHAAAAAAAAANGEEEEEEEER 
+
+---
+
+### How to train the PPO model : 
+
+    Launch Mujoco/RLTests/PPO2.py
+
+AAAAAAAAAAA COOOOONTINIUER POUR ETRE BCP BCP PLUS CLAIR
+
+### Loads the trained model into the simulation : 
+    Launch Mujoco/RLTests/TestModel.py
+ AAAAAAAAAAA COOOOONTINIUER POUR ETRE BCP BCP PLUS CLAIR
