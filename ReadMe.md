@@ -297,6 +297,14 @@ Albert can move forward,backward,rotate and jump.
 
 During his jump he can rotate but can't change his trajectory
 
+
+> **In this project the goal is to reproduce the same movements as in the video.**
+> 
+> **However, we try to do it using a physical realistic approach unlike the original video**
+> 
+> **This constraint make it a lot harder for us to have identical movements as it is in the video**
+
+
 These next 3 displacement functions are based on **immediate impulse** ( during a step than stopping ):
 the impulses are added together by the simulator to compute the total force vector applied to Albert
 
@@ -314,7 +322,34 @@ the impulses are added together by the simulator to compute the total force vect
         right : angular velocity "impulse" $[0,0,10]_{Albert's Referential}$
 
 #### jump(jump,move) : 
-the jump functions for each simulator are different and therefore will be further explained in part V 
+
+---
+**Jumping in Pybullet :**
+
+Note : there is an issue in the jump function, before that the count hits 100, albert has jump lots of time, this behaviour didn't occur before
+
+**xFactor** = 1 if going forward, 0 if not moveing, -1 if going backward
+
+**oriJump** = Albert's orientation at the beginning of the jump
+
+**newOri** = Albert's actual orientation
+
+**Upward :**
+- **beginning of the jump** :  $step * [500 * xFactor,0,1000]_{Albert's Referential}$ (N)
+- **ascension** :  $step * [500 * xFactor * cos(newOri - oriJump), -500 * xFactor * sin(newOri - oriJump), 1000]_{Albert's Referential}$ ( in N)
+
+Downward :
+- impulse : $step * [500 * xFactor * cos(newOri - oriJump), -500 * xFactor * sin(newOri - oriJump), -1000]_{Albert's Referential}$ ( in N )
+
+---
+**Jumping in Mujoco :**
+
+**i** : jump force = 13000
+
+xJumpingFactor : identical as Pybullet's xFactor
+
+**Beginning of the jump** : $step * [5 * xJumpingFactor,0,i]_{Albert's Referential}$ (in N)
+
 
 ### Albert's Vision
 Albert's vision is done with the **raycasting()** function :
