@@ -1,6 +1,6 @@
 import keyboard
 
-from gym_examples.gym_examples.envs.AlbertEnv import AlbertEnv
+from gym_albert_pybullet.gym_examples.envs.AlbertEnv import AlbertEnv
 
 def action_debug():
     # Dictionary to map arrow keys to their corresponding index in the output array

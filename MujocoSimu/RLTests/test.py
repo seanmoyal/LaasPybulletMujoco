@@ -1,4 +1,4 @@
-from gym_examples2.gym_examples.envs.AlbertEnv import AlbertEnv
+from gym_examples3.gym_examples.envs.AlbertEnv import AlbertEnv
 import keyboard
 
 def action_debug():
@@ -33,6 +33,7 @@ for ep in range(episodes):
     env.reset()
     done = False
     while not done:
+
         env.render()
         current_obs, reward, done, info = env.step(action_debug())
         #current_obs, reward, done, info = env.step(env.action_space.sample())

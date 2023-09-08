@@ -79,8 +79,6 @@ the environment :
 > pip install numpy
 > 
 > pip install gym
-> 
-> pip install torchvision
 >
 > pip install stable-baselines3
 
@@ -97,6 +95,10 @@ the environment :
 > pip install torchvision
 > 
 > pip install stable-baselines3
+> 
+> pip install shimmy
+> 
+> pip install tensorboard
 
 ### 2 - Testing the various simulations
 
@@ -121,7 +123,7 @@ In both programs you can move albert to see how it interacts with the environmen
 The blueprint of the project in Pybullet and Mujoco is the same : 
 
 - A folder (Pybullet/Mujoco) containing a folder ObjectsEnvironment and a folder RL Test
-- A package named gym_example containing the file AlbertEnv.py
+- A package named gym_albert_(pybullet/mujoco) containing the file AlbertEnv.py
 - the Enums.py file for all the enum objects (ObjectType,MoveType,TurnType,JumpType)
 
 ### 2 - Details about the various files in the folder Pybullet or Mujoco
@@ -214,8 +216,8 @@ ObjectsEnvironment is the folder containing the class files of the project's obj
 - reset_room() : resets all pressed buttons and closes the door
 - translate(id,translation) : apples a translation to the object's position
 
-#### gym_examples
-        Go to gym_examples/gym_examples/envs/AlbertEnv.py
+#### gym_albert
+        Go to gym_albert/gym_examples/envs/AlbertEnv.py
 
 In the following we will be talking about space attributes **( state_space,observation_space, action_space)**
 These attributes are blueprints of the actual attributes **(curr_state,current_obs and action which is not an attribute but is part of the environment )**
@@ -490,9 +492,19 @@ diaginertia = [0.001 0.001 0.001]
 #### Room Creation
 
 ---
-The Room is Manually added in AlbertEnv.__init__()
 
-AAAAAAAAAA CHAAAAAAAAANGEEEEEEEER 
+- mjcf files of the room and the actor are uploaded in AlbertEnv.__init__() then merged together to create the mujoco model
+
+- mjcf files are located in the xmlDirectory
+
+- The mjcf file Actor.xml is the file that contains the Albert object
+
+        **To create a mjcf file for a room** :
+            - Go to XmlConversionDirectory/CreateMjcfRooms.py
+            - run add_room_by_number() and chose the file name and the room_index that you want
+            - add_room_by_number() calls xml_room_manager_pybullet() (from xmlConverter.py) to convert the chosen room into a mjcf file
+
+
 
 ---
 
@@ -500,8 +512,23 @@ AAAAAAAAAA CHAAAAAAAAANGEEEEEEEER
 
     Launch Mujoco/RLTests/PPO2.py
 
-AAAAAAAAAAA COOOOONTINIUER POUR ETRE BCP BCP PLUS CLAIR
+- The used neural network is a MLP ( Multi Layer Perceptron) with 735 inputs (630 of type and 105 of distance) and 3 hidden layers
 
-### Loads the trained model into the simulation : 
+- The call model.learn() launches the training, change the number of timestep to change the size of the training
+
+- the model is then saved in Mujoco/RLTests/trained_model_directory/ppo_model.zip
+
+- to change the trained model, change the name in the call **model.save()**
+
+- To view the training, the tensor board information is contained in **TLTests/albert_training_tensorboard**
+
+METTRE LA LIGNE DE COMMANDE POUR LANCER TENSORBOARD
+
+### How to view the trained model in the simulation : 
     Launch Mujoco/RLTests/TestModel.py
- AAAAAAAAAAA COOOOONTINIUER POUR ETRE BCP BCP PLUS CLAIR
+
+- the model is loaded with **PPO.load("./trained_model_directory/ppo_model")**
+
+- to change the trained model, change the name in the call **PP.load()**
+
+Then in the environment loop, the call : **loaded_model.predict(obs)** returns the optimized action

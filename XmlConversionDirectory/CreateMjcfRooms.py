@@ -1,32 +1,32 @@
 import pybullet as p
 import pybullet_data
-from PybulletSimu.ObjetsEnvironnement.RoomManager import RoomManager
-from PybulletSimu.ObjetsEnvironnement.Cube import Cube
-from PybulletSimu.ObjetsEnvironnement.Door import Door
-from PybulletSimu.ObjetsEnvironnement.IBlock import IBlock
-from PybulletSimu.ObjetsEnvironnement.Button import Button
-from PybulletSimu.ObjetsEnvironnement.Fence import Fence
-from PybulletSimu.ObjetsEnvironnement.Room import Room
+from PybulletSimu.ObjectsEnvironment.RoomManager import RoomManager
+from PybulletSimu.ObjectsEnvironment.Cube import Cube
+from PybulletSimu.ObjectsEnvironment.Door import Door
+from PybulletSimu.ObjectsEnvironment.IBlock import IBlock
+from PybulletSimu.ObjectsEnvironment.Button import Button
+from PybulletSimu.ObjectsEnvironment.Fence import Fence
+from PybulletSimu.ObjectsEnvironment.Room import Room
 
 from XmlConversionDirectory.xmlConverter import xml_room_manager_pybullet
 
-def add_room_by_number(room_manager,i,file_name):
-    if i==0:
+def add_room_by_number(room_manager,room_index,file_name):
+    if room_index==0:
         room_manager.add_room(Room(6, 11, 3, base_cube, -5.5, -1.5, 0.5))
         room_manager.room_array[0].build_basic_room(door)
         room_manager.room_array[0].build_button(button, 3, 4, 0)
-    elif i==1:
+    elif room_index==1:
         room_manager.add_room(Room(6, 11, 3, base_cube, 8, -6, 0.5))
         room_manager.room_array[0].build_basic_room(door)
         room_manager.room_array[0].build_button(button, 2, 3, 0)
         room_manager.room_array[0].build_button(button, 4, 7, 0)
         room_manager.room_array[0].build_fence(fence, 3, 5)
-    elif i ==2:
+    elif room_index ==2:
         room_manager.add_room(Room(6, 11, 3, base_cube, 8, -6, 0.5))
         room_manager.room_array[0].build_basic_room(door)
         room_manager.room_array[0].build_iblock(iblock_cube, 4, 6)
         room_manager.room_array[0].build_button(button, 4, 6, 1)
-    elif i==3:
+    elif room_index==3:
         room_manager.add_room(Room(6, 11, 3, base_cube, -5.5, -1.5, 0.5))
         room_manager.room_array[0].build_basic_room(door)
         room_manager.room_array[0].build_iblock(iblock_cube, 3, 3)
@@ -75,7 +75,7 @@ fence_2 = Fence(2.5, 1.5)
 room_manager = RoomManager()
 
 save_mjcf_file_name = "Room2bis"
-add_room_by_number(room_manager,0,save_mjcf_file_name)
+add_room_by_number(room_manager,room_index=0,file_name=save_mjcf_file_name)
 
 # alignement des niveaux
 room_manager.align_rooms()

@@ -3,8 +3,8 @@ import torch
 import torch.nn as nn
 from stable_baselines3 import PPO
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
-
-from gym_examples.gym_examples.envs.AlbertEnv import AlbertEnv
+from gym_albert_mujoco.gym_examples.envs.AlbertEnv import AlbertEnv
+from CustomCallback import CustomCallback
 # Define a custom features extractor
 
 # Custom features extractor
@@ -28,7 +28,7 @@ class MLP(nn.Module):
     def forward(self, x):
         x = torch.relu(self.fc1(x))
         x = torch.relu(self.fc2(x))
-        x = self.fc3(x)
+        x = torch.sigmoid(self.fc3(x))
         return x
 
 
@@ -39,6 +39,7 @@ print("--------------Init Environment--------------")
 env = AlbertEnv()
 #env = VecNormalize(env, norm_obs=True, norm_reward=False)
 
+# Create the vectorized environment
 # Define the network dimensions
 input_dim = np.prod(env.observation_space.shape)
 hidden_dim = 128
@@ -53,31 +54,13 @@ policy_kwargs = dict(
 
 # Instantiate the PPO agent with the custom MLP policy
 print("--------------Init Model--------------")
-model = PPO("MlpPolicy", env, policy_kwargs=policy_kwargs, verbose=1)
+model = PPO("MlpPolicy", env, policy_kwargs=policy_kwargs, verbose=1,tensorboard_log="./ppo_albert_tensorboard/")
 
 # Train the PPO model
 print("--------------Start Learning--------------")
-model.learn(total_timesteps=10000)
+model.learn(total_timesteps=10000,tb_log_name="albert_training",callback=CustomCallback())
 print("--------------End Learning--------------")
 # Save the trained model
 print("--------------Saving trained Model--------------")
-model.save("ppo_model")
+model.save("./trained_model_directory/ppo_model")
 print("--------------Trained Model Saved--------------")
-# Load the saved model
-print("--------------Loading Model--------------")
-
-loaded_model = PPO.load("./ppo_model")
-print("--------------Start Simulation--------------")
-episodes = 10
-for ep in range(episodes):
-    obs = env.reset()
-    done=False
-    while not done:
-        env.render()
-        action, _ = loaded_model.predict(obs)
-        obs, reward, done, info = env.step(action)
-
-
-
-# Close the environment
-env.close()
