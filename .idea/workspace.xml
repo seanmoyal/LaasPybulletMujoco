@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e85b1d3-72b7-40e5-9d41-6be267dc3970" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PybulletSimu/ObjectsEnvironment/AlbertCube.py" beforeDir="false" afterPath="$PROJECT_DIR$/PybulletSimu/ObjectsEnvironment/AlbertCube.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PybulletSimu/ObjectsEnvironment/Button.py" beforeDir="false" afterPath="$PROJECT_DIR$/PybulletSimu/ObjectsEnvironment/Button.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PybulletSimu/ObjectsEnvironment/Door.py" beforeDir="false" afterPath="$PROJECT_DIR$/PybulletSimu/ObjectsEnvironment/Door.py" afterDir="false" />

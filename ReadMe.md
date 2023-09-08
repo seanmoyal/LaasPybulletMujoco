@@ -165,9 +165,9 @@ ObjectsEnvironment is the folder containing the class files of the project's obj
 - memory_state : array which stacks the 5 last environment states 
 - memory_observation : array which stacks albert's 5 last observations :
 
-        $[obs0,...,obs4]$ , obs4 being the lastest observation
+        $$[obs0,...,obs4]$$ , obs4 being the lastest observation
 
-       $obsi = [type_{0_i},...,type_{21_i},distance_{0_i},...,distance_{21_i}]$
+       $$obsi = [type_{0_i},...,type_{21_i},distance_{0_i},...,distance_{21_i}]$$
 >$type_{j_i}$ = type of the object detected by the ray j during observation i
 > 
 >$distance_{j_i}$ = distance of Albert to the object detected by the ray j during observation i
@@ -191,9 +191,9 @@ ObjectsEnvironment is the folder containing the class files of the project's obj
 - binarize_button_states(buttons) : returns an array of all is_pressed values binarized (1 and 0)
 - flat_memory() : formats the memory_observation into the correct form : 
 
-      From  $[[type0_0,...,type21_0,distance0_0,...,distance21_0],...,[type0_4,...,type21_4,distance0_4,...,distance21_4]]$
+      From  $$[[type0_0,...,type21_0,distance0_0,...,distance21_0],...,[type0_4,...,type21_4,distance0_4,...,distance21_4]]$$
 
-      To $[type0_0,...,type21_0,type0_1,...,type21_1,...,type21_4,distance0_0,...distance21_4]$
+      To $$[type0_0,...,type21_0,type0_1,...,type21_1,...,type21_4,distance0_0,...distance21_4]$$
 
 
 
@@ -233,7 +233,7 @@ For more information read the following documentation : https://www.gymlibrary.d
 - prev_state : previous state
 - observation_space : 
 
-      $[type0_0,...,type21_0,type0_1,...,type21_1,...,type21_4,distance0_0,...distance21_4]$
+      $$[type0_0,...,type21_0,type0_1,...,type21_1,...,type21_4,distance0_0,...distance21_4]$$
   look at part 3 to see the difference between Pybullet and Mujoco on that matter.
 
 - action_space : $[turn,move,jump]$, these variables are detailed in the **Displacement** paragraph
@@ -313,13 +313,13 @@ the impulses are added together by the simulator to compute the total force vect
 
 #### move(move) : 
 
-        forward : impulse $step * [250,0,0]_{Albert's Referential}$ (in N)
-        backward : impulse $step * [-250,0,0]_{Albert's Referential}$ (in N)
+        forward : impulse $$step * [250,0,0]_{Albert's Referential}$$ (in N)
+        backward : impulse $$step * [-250,0,0]_{Albert's Referential}$$ (in N)
 
 #### yaw_turn(turn):
 
-        left : angular velocity "impulse" $[0,0,-10]_{Albert's Referential}$
-        right : angular velocity "impulse" $[0,0,10]_{Albert's Referential}$
+        left : angular velocity "impulse" $$[0,0,-10]_{Albert's Referential}$$
+        right : angular velocity "impulse" $$[0,0,10]_{Albert's Referential}$$
 
 #### jump(jump,move) : 
 
