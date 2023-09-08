@@ -1,4 +1,4 @@
-from PybulletSimu.ObjetsEnvironnement.Cube import Cube
+from PybulletSimu.ObjectsEnvironment.Cube import Cube
 
 
 class Fence(Cube):  # classe d'une barrière pour empêcher l'ia de passer

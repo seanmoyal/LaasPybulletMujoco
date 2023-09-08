@@ -1,6 +1,6 @@
 import pybullet as p
 
-from PybulletSimu.ObjetsEnvironnement.Cube import Cube
+from PybulletSimu.ObjectsEnvironment.Cube import Cube
 
 
 class Door(Cube):

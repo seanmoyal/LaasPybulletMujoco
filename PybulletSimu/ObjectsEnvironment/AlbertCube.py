@@ -1,6 +1,6 @@
 import pybullet as p
 import numpy as np
-from PybulletSimu.ObjetsEnvironnement.Cube import Cube
+from PybulletSimu.ObjectsEnvironment.Cube import Cube
 from Enums import TurnType,JumpType,MoveType,ObjectType
 
 class AlbertCube(Cube):
@@ -58,7 +58,7 @@ class AlbertCube(Cube):
         return contact_results
 
     def jump(self, jump, move):
-        i = 1000  # force du jump sur un pas
+        i = 10000  # force du jump sur un pas
         move_x = 0
         if move == MoveType.BACKWARD_MOVE.value:
             move_x = -1
@@ -80,15 +80,17 @@ class AlbertCube(Cube):
             self.jumping = False
         elif (not self.jumping and self.still_jumping):
             if (self.count >= 1 and self.count <= 100):
+                print("BBBBBBBBBBBBBBBBBBB")
                 impulse = [500 * self.x_factor * np.cos(new_ori - self.ori_jump),
                            -500 * self.x_factor * np.sin(new_ori - self.ori_jump), i]
                 p.applyExternalForce(self.id, -1, impulse, [0, 0, 0], p.LINK_FRAME)
                 self.count += 1
             elif (len(p.getContactPoints(self.id)) == 0):
+                print("CCCCCCCCCCCCCCCCC")
                 impulse = [500 * self.x_factor * np.cos(new_ori - self.ori_jump),
                            -500 * self.x_factor * np.sin(new_ori - self.ori_jump), -i]
                 p.applyExternalForce(self.id, -1, impulse, [0, 0, 0], p.LINK_FRAME)
-            elif (len(p.getContactPoints(self.id)) != 0):  # pb du fait du contact cest jamais valide
+            else:  # pb du fait du contact cest jamais valide
                 print("yaaaaaaaaaaaaaaaaaaaaas")
                 self.x_factor = 0
                 self.still_jumping = False

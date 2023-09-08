@@ -1,4 +1,4 @@
-from PybulletSimu.ObjetsEnvironnement.Cube import Cube
+from PybulletSimu.ObjectsEnvironment.Cube import Cube
 import pybullet as p
 class Button(Cube): # Classe des bouttons : spots verts ou l'ia doit passer pour ouvrir la porte
 
