@@ -555,9 +555,10 @@ diaginertia = [0.001 0.001 0.001]
 
 - to change the trained model, change the name in the call **model.save()**
 
-- To view the training, the tensor board information is contained in **TLTests/albert_training_tensorboard**
+- To view the training, the Tensorboard information is contained in **TLTests/albert_training_tensorboard**
 
-METTRE LA LIGNE DE COMMANDE POUR LANCER TENSORBOARD
+      cd MujocoSimu/RLLTests
+      tensorboard --logdir ./ppo_albert_tensorboard/
 
 ### How to view the trained model in the simulation : 
     Launch Mujoco/RLTests/TestModel.py
