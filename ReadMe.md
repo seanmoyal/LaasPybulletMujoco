@@ -50,20 +50,20 @@ Check https://medium.com/mlearning-ai/ppo-intuitive-guide-to-state-of-the-art-re
 Here's a basic representation of how the environment works : 
 
 At each step t the agent :
- - executes an action A_t
+ - executes an action $A_t$
 
- - receives an observation O_t
- - receives a reward R_t
+ - receives an observation $O_t$
+ - receives a reward $R_t$
 
 the environment :
- - receives action A_t
- - emits observation 0_{t+1}
- - emits scalar reward R_{t+1}
+ - receives action $A_t$
+ - emits observation $0_{t+1}$
+ - emits scalar reward $R_{t+1}$
 
 
->The environment state S_t is the environment's private representation ( it's the data used to pick the next observation and reward )
+>The environment state $S_t$ is the environment's private representation ( it's the data used to pick the next observation and reward )
 >
->The Observation O_t is the environment's information that de agent perceives
+>The Observation $O_t$ is the environment's information that de agent perceives
 >
 >The Reward is calculated based on the State
 > 
@@ -151,26 +151,26 @@ ObjectsEnvironment is the folder containing the class files of the project's obj
 - current_state : describes the environment state :  
 > **current_state** = { 
 >
->    **'CharacterPosition '**  = [x,y,z]_local, Albert's position
+>    **'CharacterPosition '**  = $[x,y,z]_{local}$, Albert's position
 >
 >    **'doorState'** = door , with door = 1 if all buttons are pressed
 >
->    **'doorPosition'** = [x,y], the position of the door
+>    **'doorPosition'** = $[x,y]$, the position of the door
 >
->    **'buttonsState'** = [b0,..,bn], with n the number of buttons and bi=1 if the button i is pressed
+>    **'buttonsState'** = $[b0,..,bn]$, with n the number of buttons and bi=1 if the button i is pressed
 >
->    **'contactPoints'** = [t0,...,t6] with ti the i th type  of object in contact with albert
+>    **'contactPoints'** = $[t0,...,t6]$ with ti the i th type  of object in contact with albert
 
 }
 - memory_state : array which stacks the 5 last environment states 
 - memory_observation : array which stacks albert's 5 last observations :
 
-        [obs0,...,obs4] , obs4 being the lastest observation
+        $[obs0,...,obs4]$ , obs4 being the lastest observation
 
-        obsi = [type_{0_i},...,type_{21_i},distance_{0_i},...,distance_{21_i}]
->type_{j_i} = type of the object detected by the ray j during observation i
+       $obsi = [type_{0_i},...,type_{21_i},distance_{0_i},...,distance_{21_i}]$
+>$type_{j_i}$ = type of the object detected by the ray j during observation i
 > 
->distance_{j_i} = distance of Albert to the object detected by the ray j during observation i
+>$distance_{j_i}$ = distance of Albert to the object detected by the ray j during observation i
 
 
 <ins>General functions :<ins/>
@@ -191,9 +191,9 @@ ObjectsEnvironment is the folder containing the class files of the project's obj
 - binarize_button_states(buttons) : returns an array of all is_pressed values binarized (1 and 0)
 - flat_memory() : formats the memory_observation into the correct form : 
 
-      From  [[type0_0,...,type21_0,distance0_0,...,distance21_0],...,[type0_4,...,type21_4,distance0_4,...,distance21_4]]
+      From  $[[type0_0,...,type21_0,distance0_0,...,distance21_0],...,[type0_4,...,type21_4,distance0_4,...,distance21_4]]$
 
-      To [type0_0,...,type21_0,type0_1,...,type21_1,...,type21_4,distance0_0,...distance21_4]
+      To $[type0_0,...,type21_0,type0_1,...,type21_1,...,type21_4,distance0_0,...distance21_4]$
 
 
 
@@ -233,10 +233,10 @@ For more information read the following documentation : https://www.gymlibrary.d
 - prev_state : previous state
 - observation_space : 
 
-      [type0_0,...,type21_0,type0_1,...,type21_1,...,type21_4,distance0_0,...distance21_4]
+      $[type0_0,...,type21_0,type0_1,...,type21_1,...,type21_4,distance0_0,...distance21_4]$
   look at part 3 to see the difference between Pybullet and Mujoco on that matter.
 
-- action_space : [turn,move,jump], these variables are detailed in the **Displacement** paragraph
+- action_space : $[turn,move,jump]$, these variables are detailed in the **Displacement** paragraph
 - rng : to randomize Albert's initial position
 - current_obs : Albert's current observation
 - time_episode : time Albert has to go through the door before an automatic reset
@@ -267,7 +267,7 @@ Here's how a RL environment episode looks like :
 
 ### Gym details : 
 
-#### actions  : [turn,move,jump]
+#### actions  : $[turn,move,jump]$
 The values that those 3 variables can take can also be seen in Enums.py
 
 - turn : 0 = doesn't turn, 1 = turns left, 2 = turns right
@@ -308,7 +308,7 @@ During his jump he can rotate but can't change his trajectory
 These next 3 displacement functions are based on **immediate impulse** ( during a step than stopping ):
 the impulses are added together by the simulator to compute the total force vector applied to Albert
 
-#### action space : action = [turn,move,jump]
+#### action space : action = $[turn,move,jump]$
 
 
 #### move(move) : 
@@ -362,7 +362,7 @@ Each ray has a maximum length 'ray_length'.
 If a ray hits an object before reaching its maximum length, it returns the information on the type of object detected and its distance to Albert's center of mass.
 If nothing is detected, the ray returns the object type 0 or -1 ( 0 if it hits the plane ) and its max length.
 
-        raycasting() -> [[obj1,distance1],...,[obj21,...,distance21]]
+        raycasting() -> $[[obj1,distance1],...,[obj21,...,distance21]]$
 
 The function is structured of 3 parts : 
 
