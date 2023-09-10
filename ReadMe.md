@@ -23,6 +23,7 @@ recreate the Reinforcement Learning Environments seen in the video in 3 differen
 
 #### V - Specificities of each Simulator
 
+### Note : to access to the isaacgym  project, go to : https://github.com/seanmoyal/AlbertIsaacGym
 
 ## <ins>I - What's a RL Environment ?<ins/>
 
