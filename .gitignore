@@ -1,0 +1,11 @@
+MujocoSimu/ObjectsEnvironment/__pycache__/*
+MujocoSimu/RLTests/__pycache__/*
+PybulletSimu/ObjectsEnvironment/__pycache__/*
+XmlConversionDirectory/__pycache__/*
+gym_albert_mujoco/__pycache__/*
+gym_albert_mujoco/gym_examples/__pycache__/*
+gym_albert_mujoco/gym_examples/envs/__pycache__/*
+gym_albert_pybullet/__pycache__/*
+gym_albert_pybullet/gym_examples/__pycache__/*
+gym_albert_pybullet/gym_examples/envs/__pycache__/*
+__pycache__/*
