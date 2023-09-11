@@ -4,7 +4,7 @@ import torch.nn as nn
 from stable_baselines3 import PPO
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 
-from gym_examples.gym_examples.envs.AlbertEnv import AlbertEnv
+from gym_albert_pybullet.gym_examples.envs.AlbertEnv import AlbertEnv
 # Define a custom features extractor
 
 # Custom features extractor

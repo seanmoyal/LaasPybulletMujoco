@@ -4,6 +4,7 @@ import torch.nn as nn
 from stable_baselines3 import PPO
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 from gym_albert_mujoco.gym_examples.envs.AlbertEnv import AlbertEnv
+import gym_albert_mujoco
 from CustomCallback import CustomCallback
 # Define a custom features extractor
 
@@ -62,5 +63,9 @@ model.learn(total_timesteps=10000,tb_log_name="albert_training",callback=CustomC
 print("--------------End Learning--------------")
 # Save the trained model
 print("--------------Saving trained Model--------------")
-model.save("./trained_model_directory/ppo_model")
+mujoco_path = gym_albert_mujoco.__file__
+project_idx = mujoco_path.find("gym_albert_mujoco")
+project_path = mujoco_path[:project_idx]
+trained_model_dir = project_path + "MujocoSimu/RLTests/trained_model_directory/ppo_model_2"
+model.save(trained_model_dir)
 print("--------------Trained Model Saved--------------")

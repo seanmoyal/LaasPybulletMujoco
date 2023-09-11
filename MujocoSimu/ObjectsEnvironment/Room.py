@@ -1,5 +1,5 @@
-from MujocoSimu.ObjetsEnvironnement.Button import Button
-from MujocoSimu.ObjetsEnvironnement.Door import Door
+from MujocoSimu.ObjectsEnvironment.Button import Button
+from MujocoSimu.ObjectsEnvironment.Door import Door
 from scipy.spatial.transform import Rotation
 
 
