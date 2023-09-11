@@ -1,0 +1,32 @@
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
+
+[tool.poetry]
+authors = ["Sean Moyal"]
+description = "Tutorial edition framework"
+homepage = "https://github.com/seanmoyal/LaasPybulletMujoco"
+license = "BSD-2-Clause"
+packages = [
+  {include = "gym_albert_pybullet"},
+  {include = "gym_albert_mujoco"},
+  {include = "XmlConversionDirectory"},
+  {include = "MujocoSimu"},
+  ]
+name = "LaasPybulletMujoco"
+readme = "ReadMe.md"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+python = ">=3.8, <3.12" 
+pybullet = "^3.2.5"
+numpy = "^1.24.4"
+gym = "^0.26.2"
+stable-baselines3 = "^2.1.0"
+mujoco="^2.3.7"
+scipy="^1.10.1"
+torch = ">=2.0.0, !=2.0.1"
+torchvision= "^0.15.1"
+Shimmy = "^1.2.1"
+tensorboard="^2.14.0"
+keyboard="^0.13.5"
