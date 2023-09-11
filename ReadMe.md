@@ -74,32 +74,9 @@ the environment :
 
 ### 1 - Installation requirements
 
-#### Pybullet
-> pip install pybullet
-> 
-> pip install numpy
-> 
-> pip install gym
->
-> pip install stable-baselines3
+## Launch at the root of the repository the command 
 
-
-#### Mujoco
-> pip install mujoco
-> 
-> pip install numpy
-> 
-> pip install scipy
-> 
-> pip install gym
-> 
-> pip install torchvision
-> 
-> pip install stable-baselines3
-> 
-> pip install shimmy
-> 
-> pip install tensorboard
+> pip install .
 
 ### 2 - Testing the various simulations
 
@@ -546,7 +523,7 @@ diaginertia = [0.001 0.001 0.001]
 
 ### How to train the PPO model : 
 
-    Launch Mujoco/RLTests/PPO2.py
+    Launch MujocoSimu/RLTests/PPO.py
 
 - The used neural network is a MLP ( Multi Layer Perceptron) with 735 inputs (630 of type and 105 of distance) and 3 hidden layers
 
@@ -562,9 +539,9 @@ diaginertia = [0.001 0.001 0.001]
       tensorboard --logdir ./ppo_albert_tensorboard/
 
 ### How to view the trained model in the simulation : 
-    Launch Mujoco/RLTests/TestModel.py
+    Launch MujocoSimu/RLTests/TestModel.py
 
-- the model is loaded with **PPO.load("./trained_model_directory/ppo_model")**
+- the model is loaded with **PPO.load("trained_model_directory/ppo_model")**
 
 - to change the trained model, change the name in the call **PP.load()**
 
