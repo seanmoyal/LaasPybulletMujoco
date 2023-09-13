@@ -1,4 +1,4 @@
-from MujocoSimu.ObjetsEnvironnement.Cube import Cube
+from MujocoSimu.ObjectsEnvironment.Cube import Cube
 
 class Door(Cube):
     def __init__(self,id):

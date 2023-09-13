@@ -1,4 +1,4 @@
-from gym_examples3.gym_examples.envs.AlbertEnv import AlbertEnv
+from gym_albert_mujoco.gym_examples.envs.AlbertEnv import AlbertEnv
 import keyboard
 
 def action_debug():

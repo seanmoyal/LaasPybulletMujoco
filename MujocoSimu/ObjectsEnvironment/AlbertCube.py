@@ -1,7 +1,7 @@
 import math
 from Enums import ObjectType,MoveType,JumpType,TurnType
 import numpy as np
-from MujocoSimu.ObjetsEnvironnement.Cube import Cube
+from MujocoSimu.ObjectsEnvironment.Cube import Cube
 import mujoco as mj
 from scipy.spatial.transform import Rotation
 

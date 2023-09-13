@@ -1,7 +1,7 @@
 import os
 import xml.etree.ElementTree as ET
 import pybullet as p
-
+import gym_albert_mujoco
 
 def xml_floor(room, pos, euler, name):
     body = ET.SubElement(room, 'body', name=name, pos=list_to_string(pos), euler=list_to_string(euler))
@@ -130,8 +130,9 @@ def xml_room_manager_pybullet(room_manager, file_name):
         i += 1
     tree = ET.ElementTree(root)
 
-    project_name = "testEnviSim"
-    project_path = get_absolute_path_project(project_name).replace('\\', '/')
+    mujoco_path = gym_albert_mujoco.__file__
+    project_idx = mujoco_path.find("/gym_albert_mujoco")
+    project_path = mujoco_path[:project_idx]
     xml_directory_path = project_path + "/xmlDirectory/"
     file = xml_directory_path + file_name + ".xml"
     tree.write(file)
@@ -142,16 +143,3 @@ def list_to_string(list):
     for l in list:
         s += " " + str(l)
     return s
-
-def get_absolute_path_project(project_name):
-
-    script_directory = os.path.dirname(os.path.abspath(__file__))
-
-    current_directory = script_directory
-    while current_directory != os.path.dirname(current_directory):
-        if os.path.basename(current_directory) == project_name:
-            return current_directory
-        current_directory = os.path.dirname(current_directory)
-
-    # If the specified directory is not found, return None
-    return None

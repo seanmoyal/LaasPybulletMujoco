@@ -10,6 +10,7 @@ from MujocoSimu.ObjectsEnvironment.Room import Room
 from MujocoSimu.ObjectsEnvironment.RoomManager import RoomManager
 from XmlConversionDirectory.xmlMerger import merge_mjcf_files
 from Enums import JumpType,MoveType
+import gym_albert_mujoco
 
 class AlbertEnv(gym.Env):
     metadata = {'render.modes': ['human']}
@@ -18,7 +19,9 @@ class AlbertEnv(gym.Env):
 
         self.room_manager = RoomManager()
         project_name="testEnviSim"
-        project_path = get_absolute_path_project(project_name).replace('\\', '/')
+        mujoco_path = gym_albert_mujoco.__file__
+        project_idx = mujoco_path.find("/gym_albert_mujoco")
+        project_path = mujoco_path[:project_idx]
         xml_directory_path=project_path+"/xmlDirectory/"
         room_manager_path=xml_directory_path+"Room2bis.xml"
         room_manager_xml = room_manager_path
@@ -179,17 +182,3 @@ class AlbertEnv(gym.Env):
     def update_state(self):
         self.curr_state = self.character.current_state
         self.prev_state = self.character.get_previous_state()
-
-
-def get_absolute_path_project(project_name):
-
-    script_directory = os.path.dirname(os.path.abspath(__file__))
-
-    current_directory = script_directory
-    while current_directory != os.path.dirname(current_directory):
-        if os.path.basename(current_directory) == project_name:
-            return current_directory
-        current_directory = os.path.dirname(current_directory)
-
-    # If the specified directory is not found, return None
-    return None

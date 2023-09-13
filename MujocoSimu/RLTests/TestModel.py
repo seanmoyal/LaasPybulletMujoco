@@ -1,10 +1,10 @@
 
 from stable_baselines3 import PPO
-from gym_examples3.gym_examples.envs.AlbertEnv import AlbertEnv
+from gym_albert_mujoco.gym_examples.envs.AlbertEnv import AlbertEnv
 
 print("--------------Loading Model--------------")
 env = AlbertEnv()
-loaded_model = PPO.load("./ppo_model")
+loaded_model = PPO.load("trained_model_directory/ppo_model")
 print("--------------Start Simulation--------------")
 episodes = 10
 for ep in range(episodes):
